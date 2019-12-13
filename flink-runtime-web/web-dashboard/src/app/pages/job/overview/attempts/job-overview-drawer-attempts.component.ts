@@ -16,22 +16,21 @@
  * limitations under the License.
  */
 
-import { Component, OnInit, ChangeDetectionStrategy, OnDestroy, ChangeDetectorRef } from '@angular/core';
-import { NzModalService } from 'ng-zorro-antd';
+import { Component, OnInit, ChangeDetectionStrategy, OnDestroy, ChangeDetectorRef, Input } from '@angular/core';
 import { Subject } from 'rxjs';
 import { debounceTime, flatMap, takeUntil } from 'rxjs/operators';
 import { deepFind } from 'utils';
 import { JobSubTaskInterface } from 'interfaces';
 import { JobService } from 'services';
-import { JobOverviewDrawerAttemptsComponent } from '../attempts/job-overview-drawer-attempts.component';
 
 @Component({
-  selector: 'flink-job-overview-drawer-subtasks',
-  templateUrl: './job-overview-drawer-subtasks.component.html',
-  styleUrls: ['./job-overview-drawer-subtasks.component.less'],
+  selector: 'flink-job-overview-drawer-attempts',
+  templateUrl: './job-overview-drawer-attempts.component.html',
+  styleUrls: ['./job-overview-drawer-attempts.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class JobOverviewDrawerSubtasksComponent implements OnInit, OnDestroy {
+export class JobOverviewDrawerAttemptsComponent implements OnInit, OnDestroy {
+  @Input() subtaskId: number;
   listOfTask: JobSubTaskInterface[] = [];
   destroy$ = new Subject();
   sortName: string;
@@ -39,7 +38,7 @@ export class JobOverviewDrawerSubtasksComponent implements OnInit, OnDestroy {
   isLoading = true;
 
   trackTaskBy(_: number, node: JobSubTaskInterface) {
-    return node.subtask;
+    return node.attempt;
   }
 
   sort(sort: { key: string; value: string }) {
@@ -61,25 +60,14 @@ export class JobOverviewDrawerSubtasksComponent implements OnInit, OnDestroy {
       ];
     }
   }
-
-  viewAttemptHistory(subtaskId: number) {
-    this.nzModalService.create({
-      nzContent: JobOverviewDrawerAttemptsComponent,
-      nzTitle: 'Attempt History',
-      nzWidth: '1000px',
-      nzComponentParams: { subtaskId },
-      nzFooter: null
-    });
-  }
-
-  constructor(private jobService: JobService, private cdr: ChangeDetectorRef, private nzModalService: NzModalService) {}
+  constructor(private jobService: JobService, private cdr: ChangeDetectorRef) {}
 
   ngOnInit() {
     this.jobService.jobWithVertex$
       .pipe(
         debounceTime(100),
         takeUntil(this.destroy$),
-        flatMap(data => this.jobService.loadSubTasks(data.job.jid, data.vertex!.id))
+        flatMap(data => this.jobService.loadSubTaskAttempts(data.job.jid, data.vertex!.id, this.subtaskId))
       )
       .subscribe(
         data => {

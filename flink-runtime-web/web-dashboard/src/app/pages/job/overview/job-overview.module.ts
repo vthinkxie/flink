@@ -21,6 +21,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ShareModule } from 'share/share.module';
 import { JobOverviewDrawerAccumulatorsComponent } from './accumulators/job-overview-drawer-accumulators.component';
+import { JobOverviewDrawerAttemptsComponent } from './attempts/job-overview-drawer-attempts.component';
 import { JobOverviewDrawerBackpressureComponent } from './backpressure/job-overview-drawer-backpressure.component';
 import { JobOverviewDrawerChartComponent } from './chart/job-overview-drawer-chart.component';
 import { JobOverviewDrawerDetailComponent } from './detail/job-overview-drawer-detail.component';
@@ -41,10 +42,12 @@ import { JobOverviewDrawerWatermarksComponent } from './watermarks/job-overview-
     JobOverviewDrawerDetailComponent,
     JobOverviewDrawerTaskmanagersComponent,
     JobOverviewDrawerSubtasksComponent,
+    JobOverviewDrawerAttemptsComponent,
     JobOverviewDrawerChartComponent,
     JobOverviewDrawerWatermarksComponent,
     JobOverviewDrawerAccumulatorsComponent,
     JobOverviewDrawerBackpressureComponent
-  ]
+  ],
+  entryComponents: [JobOverviewDrawerAttemptsComponent]
 })
 export class JobOverviewModule {}

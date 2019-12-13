@@ -16,14 +16,14 @@
  * limitations under the License.
  */
 
-:host {
-  display: block;
-  margin-bottom: 16px;
-}
+import { Component, ChangeDetectionStrategy, Input } from '@angular/core';
 
-nz-card {
-  margin-bottom: 16px;
-  &:last-child{
-    margin-bottom: 0;
-  }
+@Component({
+  selector: 'flink-backpressure-status',
+  templateUrl: './backpressure-status.component.html',
+  styleUrls: ['./backpressure-status.component.less'],
+  changeDetection: ChangeDetectionStrategy.OnPush
+})
+export class BackpressureStatusComponent {
+  @Input() isBackpressed: boolean;
 }

@@ -20,7 +20,7 @@
   class="no-border small"
   [nzSize]="'small'"
   [nzData]="nodes"
-  [nzScroll]="{x:((1360+left)+'px')}"
+  [nzScroll]="{x:((2100+left)+'px')}"
   [nzFrontPagination]="false"
   [nzShowPagination]="false">
   <thead (nzSortChange)="sort($event)" nzSingleSort>
@@ -35,6 +35,10 @@
       <th nzSortKey="detail.start-time" nzShowSort nzWidth="150px">Start Time</th>
       <th nzSortKey="detail.duration" nzShowSort nzWidth="150px">Duration</th>
       <th nzSortKey="detail.end-time" nzShowSort nzWidth="150px">End Time</th>
+      <th nzSortKey="detail.metrics.input-exclusive-buffers-usage-avg" nzShowSort nzWidth="230px">Input Exclusive Buffers Avg Usage</th>
+      <th nzSortKey="detail.metrics.input-floating-buffers-usage-avg" nzShowSort nzWidth="220px">Input Floating Buffers Avg Usage</th>
+      <th nzSortKey="detail.metrics.out-pool-usage-avg" nzShowSort nzWidth="160px">Out Pool Avg Usage</th>
+      <th nzSortKey="detail.metrics.is-backpressed" nzShowSort nzWidth="130px">Back Pressure</th>
       <th nzWidth="100px" nzRight="0px">Tasks</th>
     </tr>
   </thead>
@@ -70,6 +74,26 @@
       <td>{{ node.detail["start-time"] | humanizeDate: 'yyyy-MM-dd HH:mm:ss' }}</td>
       <td>{{ node.detail?.duration | humanizeDuration }}</td>
       <td>{{ node.detail["end-time"] | humanizeDate: 'yyyy-MM-dd HH:mm:ss' }}</td>
+      <td>
+        <span *ngIf="node.detail?.metrics['input-exclusive-buffers-usage-avg-complete'];else loadingTemplate">
+          {{ node.detail?.metrics['input-exclusive-buffers-usage-avg'] | percent }}
+        </span>
+      </td>
+      <td>
+        <span *ngIf="node.detail?.metrics['input-floating-buffers-usage-avg-complete'];else loadingTemplate">
+          {{ node.detail?.metrics['input-floating-buffers-usage-avg'] | percent }}
+        </span>
+      </td>
+      <td>
+        <span *ngIf="node.detail?.metrics['out-pool-usage-avg-complete'];else loadingTemplate">
+          {{ node.detail?.metrics['out-pool-usage-avg'] | percent }}
+        </span>
+      </td>
+      <td>
+        <ng-container *ngIf="node.detail?.metrics['is-backpressed-complete'];else loadingTemplate">
+          <flink-backpressure-status [isBackpressed]="node.detail?.metrics['is-backpressed']"></flink-backpressure-status>
+        </ng-container>
+      </td>
       <td nzRight="0px" [class.selected]="selectedNode?.id === node.id">
         <flink-task-badge [tasks]="node.detail?.tasks"></flink-task-badge>
       </td>

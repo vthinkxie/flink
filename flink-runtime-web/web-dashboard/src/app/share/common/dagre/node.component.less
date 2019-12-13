@@ -36,6 +36,10 @@
     text-align: left;
     word-break: break-all;
     border: 1px solid @primary-color;
+    &.backpressed {
+      background: lighten(@warning-color, 30%);
+      border: 1px solid @warning-color;
+    }
 
     .content-wrap {
       font-size: 12px;
@@ -49,6 +53,10 @@
 
       &:first-child {
         margin-top: 24px;
+      }
+
+      &.backpressed {
+        color: @gold-7;
       }
 
       &.watermark {

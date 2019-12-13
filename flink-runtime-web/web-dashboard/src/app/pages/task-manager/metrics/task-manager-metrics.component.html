@@ -84,9 +84,7 @@
         </tbody>
       </nz-table>
     </nz-card>
-  </nz-card>
-  <nz-card nzTitle="Network">
-    <nz-card nzType="inner" nzTitle="Memory Segments">
+    <nz-card nzType="inner" nzTitle="Network Memory Segments">
       <nz-table
         [nzTemplateMode]="true"
         [nzShowPagination]="false"
@@ -106,6 +104,30 @@
           <tr>
             <td><strong>Total</strong></td>
             <td>{{ taskManagerDetail.metrics.memorySegmentsTotal | number }}</td>
+          </tr>
+        </tbody>
+      </nz-table>
+    </nz-card>
+    <nz-card nzType="inner" nzTitle="Managed Memory Segments">
+      <nz-table
+        [nzTemplateMode]="true"
+        [nzShowPagination]="false"
+        [nzSize]="'small'"
+        class="no-border">
+        <thead>
+          <tr>
+            <th>Type</th>
+            <th>Count</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Available</strong></td>
+            <td>{{ taskManagerDetail.metrics.manageMemorySegmentsAvailable | number }}</td>
+          </tr>
+          <tr>
+            <td><strong>Total</strong></td>
+            <td>{{ taskManagerDetail.metrics.manageMemorySegmentsTotal | number }}</td>
           </tr>
         </tbody>
       </nz-table>

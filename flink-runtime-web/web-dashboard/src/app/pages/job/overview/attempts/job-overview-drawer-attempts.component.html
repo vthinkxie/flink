@@ -21,17 +21,16 @@
   [nzSize]="'small'"
   [nzLoading]="isLoading"
   [nzData]="listOfTask"
-  [nzScroll]="{x:'2270px',y:'calc( 100% - 35px )'}"
+  [nzScroll]="{x:'2140px',y:'500px'}"
   [nzFrontPagination]="false"
   [nzShowPagination]="false">
   <thead (nzSortChange)="sort($event)" nzSingleSort>
     <tr>
-      <th nzWidth="80px" nzLeft="0px">ID</th>
+      <th nzWidth="100px" nzLeft="0px">Attempt</th>
       <th nzSortKey="metrics.read-bytes" nzShowSort nzWidth="140px">Bytes Received</th>
       <th nzSortKey="metrics.read-records" nzShowSort nzWidth="150px">Records Received</th>
       <th nzSortKey="metrics.write-bytes" nzShowSort nzWidth="120px">Bytes Sent</th>
       <th nzSortKey="metrics.write-records" nzShowSort nzWidth="120px">Records Sent</th>
-      <th nzSortKey="attempt" nzShowSort nzWidth="100px">Attempt</th>
       <th nzSortKey="host" nzShowSort nzWidth="200px">Host</th>
       <th nzSortKey="start_time" nzShowSort nzWidth="150px">Start Time</th>
       <th nzSortKey="duration" nzShowSort nzWidth="150px">Duration</th>
@@ -40,14 +39,13 @@
       <th nzSortKey="metrics.input-floating-buffers-usage" nzShowSort nzWidth="220px">Input Floating Buffers Usage</th>
       <th nzSortKey="metrics.out-pool-usage" nzShowSort nzWidth="160px">Out Pool Usage</th>
       <th nzSortKey="metrics.is-backpressed" nzShowSort nzWidth="130px">Back Pressure</th>
-      <th nzSortKey="status" nzShowSort nzWidth="120px" nzRight="50px">Status</th>
-      <th nzWidth="50px" nzRight="0px">More</th>
+      <th nzSortKey="status" nzShowSort nzWidth="120px" nzRight="0px">Status</th>
     </tr>
   </thead>
   <tbody>
     <tr *ngFor="let task of listOfTask; trackBy:trackTaskBy;">
       <td nzLeft="0">
-        {{ task.subtask }}
+        {{ task.attempt + 1 }}
       </td>
       <td>
         <span *ngIf="task.metrics['read-bytes-complete'];else loadingTemplate">
@@ -69,7 +67,6 @@
           {{ task.metrics['write-records'] | number:'1.0-0' }}
         </span>
       </td>
-      <td>{{ task.attempt + 1 }}</td>
       <td>{{ task.host }}</td>
       <td>{{ task["start_time"] | humanizeDate: 'yyyy-MM-dd HH:mm:ss' }}</td>
       <td>{{ task.duration | humanizeDuration }}</td>
@@ -94,21 +91,8 @@
           <flink-backpressure-status [isBackpressed]="task?.metrics['is-backpressed']"></flink-backpressure-status>
         </ng-container>
       </td>
-      <td nzRight="50px">
-        <flink-job-badge [state]="task.status"></flink-job-badge>
-      </td>
       <td nzRight="0px">
-        <nz-dropdown [nzPlacement]="'bottomRight'">
-          <span nz-dropdown><i nz-icon nzType="ellipsis" nzTheme="outline"></i></span>
-          <ul nz-menu>
-            <li nz-menu-item *ngIf="task['taskmanager-id'] && task['taskmanager-id'] !== '(unassigned)'">
-              <a [routerLink]="['/task-manager',task['taskmanager-id'],'logs']" target="_blank">View taskmanager log</a>
-            </li>
-            <li nz-menu-item>
-              <a (click)="viewAttemptHistory(task.subtask)">View attempt history</a>
-            </li>
-          </ul>
-        </nz-dropdown>
+        <flink-job-badge [state]="task.status"></flink-job-badge>
       </td>
     </tr>
   </tbody>

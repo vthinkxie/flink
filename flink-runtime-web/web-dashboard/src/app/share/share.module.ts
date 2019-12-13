@@ -20,6 +20,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NgZorroAntdModule } from 'ng-zorro-antd';
 import { ResizeComponent } from 'share/common/resize/resize.component';
+import { BackpressureStatusComponent } from 'share/customize/backpressure-status/backpressure-status.component';
 import { CheckpointBadgeComponent } from 'share/customize/checkpoint-badge/checkpoint-badge.component';
 import { JobChartComponent } from 'share/customize/job-chart/job-chart.component';
 import { PipeModule } from 'share/pipes/pipe.module';
@@ -46,7 +47,8 @@ import { BackpressureBadgeComponent } from './customize/backpressure-badge/backp
     ResizeComponent,
     JobChartComponent,
     CheckpointBadgeComponent,
-    BackpressureBadgeComponent
+    BackpressureBadgeComponent,
+    BackpressureStatusComponent
   ],
   exports: [
     JobListComponent,
@@ -62,7 +64,8 @@ import { BackpressureBadgeComponent } from './customize/backpressure-badge/backp
     ResizeComponent,
     JobChartComponent,
     CheckpointBadgeComponent,
-    BackpressureBadgeComponent
+    BackpressureBadgeComponent,
+    BackpressureStatusComponent
   ]
 })
 export class ShareModule {}

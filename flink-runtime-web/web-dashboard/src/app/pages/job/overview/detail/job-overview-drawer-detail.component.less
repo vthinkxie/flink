@@ -44,3 +44,28 @@ nz-form-label {
 nz-form-text {
   font-size: 12px;
 }
+
+dl {
+  padding: 24px;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  grid-gap: .75rem 2rem;
+  font-size: 12px;
+  dd {
+    font-weight: 500;
+  }
+  dt {
+    font-weight: normal;
+    position: relative;
+    &:before{
+      content: ':';
+      left: -1rem;
+      position: absolute;
+    }
+  }
+}
+
+nz-progress {
+  width: 180px;
+  display: block;
+}

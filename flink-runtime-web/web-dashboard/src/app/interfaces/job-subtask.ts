@@ -33,6 +33,14 @@ export interface JobSubTaskInterface {
     'write-bytes-complete': boolean;
     'write-records': number;
     'write-records-complete': boolean;
+    'input-exclusive-buffers-usage': number;
+    'input-exclusive-buffers-usage-complete': boolean;
+    'input-floating-buffers-usage': number;
+    'input-floating-buffers-usage-complete': boolean;
+    'is-backpressed': boolean;
+    'is-backpressed-complete': boolean;
+    'out-pool-usage': number;
+    'out-pool-usage-complete': boolean;
   };
   'taskmanager-id': string;
 }

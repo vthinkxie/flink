@@ -31,6 +31,7 @@ export class NodeComponent {
   operatorStrategy: string | null;
   parallelism: number | null;
   lowWatermark: number | null | undefined;
+  backpressed = false;
   height = 0;
   id: string;
 
@@ -47,6 +48,9 @@ export class NodeComponent {
     this.operatorStrategy = this.decodeHTML(value.operator_strategy);
     this.parallelism = value.parallelism;
     this.lowWatermark = value.lowWatermark;
+    if (value.detail && value.detail.metrics) {
+      this.backpressed = value.detail!.metrics['is-backpressed'];
+    }
     this.height = value.height || 0;
     this.id = value.id;
     if (description && description.length > 300) {

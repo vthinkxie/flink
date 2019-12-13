@@ -21,7 +21,7 @@
   [nzSize]="'small'"
   [nzLoading]="isLoading"
   [nzData]="listOfTaskManager"
-  [nzScroll]="{x:'1500px',y:'calc( 100% - 35px )'}"
+  [nzScroll]="{x:'1550px',y:'calc( 100% - 35px )'}"
   [nzFrontPagination]="false"
   [nzShowPagination]="false">
   <thead (nzSortChange)="sort($event)" nzSingleSort>
@@ -34,7 +34,7 @@
       <th nzWidth="150px" nzShowSort nzSortKey="metrics.write-records">Records sent</th>
       <th nzWidth="200px" nzShowSort nzSortKey="start-time">Start Time</th>
       <th nzWidth="200px" nzShowSort nzSortKey="end-time">End Time</th>
-      <th nzWidth="100px" nzShowSort nzSortKey="duration">Duration</th>
+      <th nzWidth="150px" nzShowSort nzSortKey="duration">Duration</th>
       <th nzWidth="120px">Tasks</th>
       <th nzWidth="100px" nzRight="0px" nzShowSort nzSortKey="status">Status</th>
     </tr>

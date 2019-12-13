@@ -15,15 +15,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+@import "theme";
 
-:host {
-  display: block;
-  margin-bottom: 16px;
-}
+span {
+  font-weight: 700;
+  text-align: center;
+  color: #fff;
+  width: 30px;
+  padding: 3px 5px;
+  cursor: default;
+  background: @primary-color;
 
-nz-card {
-  margin-bottom: 16px;
-  &:last-child{
-    margin-bottom: 0;
+  &.backpressed {
+    background: @warning-color;
   }
 }

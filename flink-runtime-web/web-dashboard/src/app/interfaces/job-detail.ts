@@ -113,6 +113,14 @@ interface MetricsStatus {
   'read-records-complete': boolean;
   'write-records': number;
   'write-records-complete': boolean;
+  'input-exclusive-buffers-avg-usage': number;
+  'input-exclusive-buffers-avg-usage-complete': boolean;
+  'input-floating-buffers-avg-usage': number;
+  'input-floating-buffers-avg-usage-complete': boolean;
+  'is-backpressed': boolean;
+  'is-backpressed-complete': boolean;
+  'out-pool-avg-usage': number;
+  'out-pool-usage-avg-complete': boolean;
 }
 
 export interface NodesItemInterface {

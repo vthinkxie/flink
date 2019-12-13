@@ -181,6 +181,20 @@ export class JobService {
   }
 
   /**
+   *
+   * @param jobId
+   * @param vertexId
+   * @param subtaskId
+   */
+  loadSubTaskAttempts(jobId: string, vertexId: string, subtaskId: number) {
+    return this.httpClient
+      .get<{ attempts: JobSubTaskInterface[] }>(
+        `${BASE_URL}/jobs/${jobId}/vertices/${vertexId}/subtasks/${subtaskId}/attempts`
+      )
+      .pipe(map(data => (data && data.attempts) || []));
+  }
+
+  /**
    * Get subtask timeline
    * @param jobId
    * @param vertexId
