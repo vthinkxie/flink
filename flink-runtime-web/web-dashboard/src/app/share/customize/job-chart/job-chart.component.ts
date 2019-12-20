@@ -16,8 +16,6 @@
  * limitations under the License.
  */
 
-/// <reference path="../../../../../node_modules/@antv/g2/src/index.d.ts" />
-
 import {
   AfterViewInit,
   ChangeDetectionStrategy,

@@ -16,11 +16,16 @@
  * limitations under the License.
  */
 
-:host {
-  display: block;
-  overflow: hidden;
-}
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 
-nz-card {
-  margin: 24px;
+@Component({
+  selector: 'flink-job-pending-slots',
+  templateUrl: './job-pending-slots.component.html',
+  styleUrls: ['./job-pending-slots.component.less'],
+  changeDetection: ChangeDetectionStrategy.OnPush
+})
+export class JobPendingSlotsComponent implements OnInit {
+  constructor() {}
+
+  ngOnInit() {}
 }

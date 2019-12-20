@@ -53,6 +53,10 @@ export class JobStatusComponent implements OnInit, OnDestroy {
     {
       path: 'configuration',
       title: 'Configuration'
+    },
+    {
+      path: 'pending-slots',
+      title: 'Pending Slots'
     }
   ];
 

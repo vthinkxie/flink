@@ -39,7 +39,7 @@
         <ng-container *ngFor="let exception of listOfException;trackBy:trackExceptionBy;">
           <tr>
             <td nzShowExpand [(nzExpand)]="exception.expand"></td>
-            <td>{{exception.timestamp | date:'yyyy-MM-dd HH:mm:ss'}}</td>
+            <td>{{exception.timestamp | date:'yyyy-MM-dd HH:mm:ss:SSS'}}</td>
             <td>
               <div class="name">
                 {{exception.task}}
@@ -53,6 +53,11 @@
             </td>
           </tr>
         </ng-container>
+        <tr *ngIf="truncated">
+          <td colspan="6">
+            <button nz-button nzBlock nzType="primary" nzGhost (click)="loadMore()" [nzLoading]="isLoading">Load More</button>
+          </td>
+        </tr>
       </tbody>
     </nz-table>
   </nz-tab>

@@ -23,6 +23,7 @@ import { JobCheckpointsComponent } from './checkpoints/job-checkpoints.component
 import { JobConfigurationComponent } from './configuration/job-configuration.component';
 import { JobExceptionsComponent } from './exceptions/job-exceptions.component';
 import { JobComponent } from './job.component';
+import { JobPendingSlotsComponent } from './pending-slots/job-pending-slots.component';
 import { JobTimelineComponent } from './timeline/job-timeline.component';
 
 const routes: Routes = [
@@ -79,6 +80,13 @@ const routes: Routes = [
         component: JobConfigurationComponent,
         data: {
           path: 'configuration'
+        }
+      },
+      {
+        path: 'pending-slots',
+        component: JobPendingSlotsComponent,
+        data: {
+          path: 'pending-slots'
         }
       },
       { path: '**', redirectTo: 'overview', pathMatch: 'full' }
