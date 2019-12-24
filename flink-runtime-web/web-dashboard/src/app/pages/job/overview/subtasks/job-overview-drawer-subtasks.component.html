@@ -102,7 +102,7 @@
           <span nz-dropdown><i nz-icon nzType="ellipsis" nzTheme="outline"></i></span>
           <ul nz-menu>
             <li nz-menu-item *ngIf="task['taskmanager-id'] && task['taskmanager-id'] !== '(unassigned)'">
-              <a [routerLink]="['/task-manager',task['taskmanager-id'],'logs']" target="_blank">View taskmanager log</a>
+              <a [routerLink]="['/task-manager',task['taskmanager-id'],'log','taskmanager.log']" target="_blank">View taskmanager log</a>
             </li>
             <li nz-menu-item>
               <a (click)="viewAttemptHistory(task.subtask)">View attempt history</a>

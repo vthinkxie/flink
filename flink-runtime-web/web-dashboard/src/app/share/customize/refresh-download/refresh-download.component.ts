@@ -27,5 +27,6 @@ import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter } from 
 export class RefreshDownloadComponent {
   @Input() downloadName: string;
   @Input() downloadHref: string;
+  @Input() isLoading = false;
   @Output() reload = new EventEmitter<void>();
 }

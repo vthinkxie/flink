@@ -29,6 +29,7 @@ import {
   JobDetailInterface,
   JobExceptionInterface,
   JobOverviewInterface,
+  JobPendingSlots,
   JobSubTaskInterface,
   JobSubTaskTimeInterface,
   JobVertexTaskManagerInterface,
@@ -292,5 +293,15 @@ export class JobService {
         links
       }
     };
+  }
+
+  /**
+   * Get pending slots
+   * @param jobId
+   */
+  loadPendingSlots(jobId: string) {
+    return this.httpClient
+      .get<JobPendingSlots>(`${BASE_URL}/jobs/${jobId}/pendingslotrequest`)
+      .pipe(map(item => item['pending-slot-requests']));
   }
 }

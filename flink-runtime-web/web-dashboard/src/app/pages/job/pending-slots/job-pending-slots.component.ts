@@ -16,7 +16,10 @@
  * limitations under the License.
  */
 
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
+import { JobPendingSlot } from 'interfaces';
+import { distinctUntilChanged, flatMap } from 'rxjs/operators';
+import { JobService } from 'services';
 
 @Component({
   selector: 'flink-job-pending-slots',
@@ -25,7 +28,27 @@ import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class JobPendingSlotsComponent implements OnInit {
-  constructor() {}
+  listOfPendingSlots: JobPendingSlot[] = [];
+  trackByPendingSlots(_: number, node: JobPendingSlot) {
+    return node.id;
+  }
+  constructor(private jobService: JobService, private cdr: ChangeDetectorRef) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.jobService.jobDetail$
+      .pipe(
+        distinctUntilChanged((pre, next) => pre.jid === next.jid),
+        flatMap(job => this.jobService.loadPendingSlots(job.jid))
+      )
+      .subscribe(
+        data => {
+          this.listOfPendingSlots = data;
+          this.cdr.markForCheck();
+        },
+        () => {
+          this.listOfPendingSlots = [];
+          this.cdr.markForCheck();
+        }
+      );
+  }
 }

@@ -16,11 +16,21 @@
  * limitations under the License.
  */
 
-flink-monaco-editor {
-  height: calc(~"100vh - 160px");
+export interface JobPendingSlots {
+  'pending-slot-requests': JobPendingSlot[];
 }
 
-:host {
-  position: relative;
-  display: block;
+export interface JobPendingSlot {
+  id: string;
+  resource_profile: {
+    shuffle_memory: number;
+    heap_memory: number;
+    offHeap_memory: number;
+    managed_memory: number;
+    cpu_cores: number;
+  };
+  start_time: number;
+  sharing_id: string;
+  'co-location_id': string;
+  tasks: { task_name: string; vertex_id: string }[];
 }

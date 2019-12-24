@@ -29,7 +29,7 @@ import { Chart } from '@antv/g2';
 import * as G2 from '@antv/g2';
 import { Subject } from 'rxjs';
 import { distinctUntilChanged, filter, takeUntil } from 'rxjs/operators';
-import { JobDetailCorrectInterface, VerticesItemRangeInterface } from 'interfaces';
+import { JobDetailCorrectInterface, JobSubTaskTimeAttemptInterface, VerticesItemRangeInterface } from 'interfaces';
 import { JobService } from 'services';
 import { COLOR_MAP } from 'config';
 
@@ -41,8 +41,6 @@ import { COLOR_MAP } from 'config';
 })
 export class JobTimelineComponent implements AfterViewInit, OnDestroy {
   destroy$ = new Subject();
-  listOfVertex: VerticesItemRangeInterface[] = [];
-  listOfSubTaskTimeLine: Array<{ name: string; status: string; range: [number, number] }> = [];
   mainChartInstance: Chart;
   subTaskChartInstance: Chart;
   jobDetail: JobDetailCorrectInterface;
@@ -52,43 +50,53 @@ export class JobTimelineComponent implements AfterViewInit, OnDestroy {
   @ViewChild('subTaskTimeLine') subTaskTimeLine: ElementRef;
 
   updateSubTaskChart(vertexId: string) {
-    this.listOfSubTaskTimeLine = [];
+    const listOfSubTaskTimeLine: Array<{ name: string; status: string; range: [number, number] }> = [];
+    let timeLineCount = 0;
     this.jobService.loadSubTaskTimes(this.jobDetail.jid, vertexId).subscribe(data => {
-      data.subtasks.forEach(task => {
-        const listOfTimeLine: Array<{ status: string; startTime: number }> = [];
-        for (const key in task.timestamps) {
-          // @ts-ignore
-          const time = task.timestamps[key];
-          if (time > 0) {
-            listOfTimeLine.push({
-              status: key,
-              startTime: time
-            });
+      data.subtasks.forEach(subtask => {
+        subtask['attempts-time-info'].forEach((attempt: JobSubTaskTimeAttemptInterface) => {
+          timeLineCount = timeLineCount + 1;
+          const listOfTimeLine: Array<{ status: string; startTime: number }> = [];
+          for (const key in attempt.timestamps) {
+            // @ts-ignore
+            const time = attempt.timestamps[key];
+            if (time > 0) {
+              listOfTimeLine.push({
+                status: key,
+                startTime: time
+              });
+            }
           }
-        }
-        listOfTimeLine.sort((pre, next) => pre.startTime - next.startTime);
-        listOfTimeLine.forEach((item, index) => {
-          if (index === listOfTimeLine.length - 1) {
-            this.listOfSubTaskTimeLine.push({
-              name: `${task.subtask} - ${task.host}`,
-              status: item.status,
-              range: [item.startTime, task.duration + listOfTimeLine[0].startTime]
-            });
-          } else {
-            this.listOfSubTaskTimeLine.push({
-              name: `${task.subtask} - ${task.host}`,
-              status: item.status,
-              range: [item.startTime, listOfTimeLine[index + 1].startTime]
-            });
-          }
+          listOfTimeLine.sort((pre, next) => pre.startTime - next.startTime);
+          listOfTimeLine.forEach((item, index) => {
+            const name = `Subtask-${attempt.subtask} | Host-${attempt.host} | Attempt-${attempt['attempt-num']}`;
+            const status = item.status;
+            if (index === listOfTimeLine.length - 1) {
+              let endTime = attempt.duration + listOfTimeLine[0].startTime;
+              if (endTime < item.startTime) {
+                endTime = item.startTime;
+              }
+              listOfSubTaskTimeLine.push({
+                name,
+                status,
+                range: [item.startTime, endTime]
+              });
+            } else {
+              listOfSubTaskTimeLine.push({
+                name,
+                status,
+                range: [item.startTime, listOfTimeLine[index + 1].startTime]
+              });
+            }
+          });
         });
       });
-      this.subTaskChartInstance.changeHeight(Math.max(data.subtasks.length * 50 + 100, 150));
-      this.subTaskChartInstance.source(this.listOfSubTaskTimeLine, {
+      this.subTaskChartInstance.changeHeight(Math.max(timeLineCount * 50 + 100, 150));
+      this.subTaskChartInstance.source(listOfSubTaskTimeLine, {
         range: {
           alias: 'Time',
           type: 'time',
-          mask: 'HH:mm:ss',
+          mask: 'HH:mm:ss:SSS',
           nice: false
         }
       });
@@ -179,8 +187,9 @@ export class JobTimelineComponent implements AfterViewInit, OnDestroy {
         takeUntil(this.destroy$)
       )
       .subscribe(data => {
+        let listOfVertex: VerticesItemRangeInterface[] = [];
         this.jobDetail = data;
-        this.listOfVertex = data.vertices
+        listOfVertex = data.vertices
           .filter(v => v['start-time'] > -1)
           .map(vertex => {
             const endTime = vertex['end-time'] > -1 ? vertex['end-time'] : vertex['start-time'] + vertex.duration;
@@ -189,13 +198,13 @@ export class JobTimelineComponent implements AfterViewInit, OnDestroy {
               range: [vertex['start-time'], endTime]
             };
           });
-        this.listOfVertex = this.listOfVertex.sort((a, b) => a.range[0] - b.range[0]);
-        this.mainChartInstance.changeHeight(Math.max(this.listOfVertex.length * 50 + 100, 150));
-        this.mainChartInstance.source(this.listOfVertex, {
+        listOfVertex.sort((a, b) => a.range[0] - b.range[0]);
+        this.mainChartInstance.changeHeight(Math.max(listOfVertex.length * 50 + 100, 150));
+        this.mainChartInstance.source(listOfVertex, {
           range: {
             alias: 'Time',
             type: 'time',
-            mask: 'HH:mm:ss',
+            mask: 'HH:mm:ss:SSS',
             nice: false
           }
         });

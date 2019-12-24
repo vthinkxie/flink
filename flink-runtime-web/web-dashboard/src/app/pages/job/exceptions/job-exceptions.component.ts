@@ -40,7 +40,7 @@ export class JobExceptionsComponent implements OnInit {
   }
   loadMore() {
     this.isLoading = true;
-    this.maxExceptions += 10;
+    this.maxExceptions += 20;
     this.jobService.jobDetail$
       .pipe(
         distinctUntilChanged((pre, next) => pre.jid === next.jid),

@@ -23,6 +23,7 @@ import { EMPTY, fromEvent, interval, merge, Subject } from 'rxjs';
 import { debounceTime, filter, map, mapTo, share, startWith, switchMap, tap } from 'rxjs/operators';
 import { BASE_URL } from '../app.config';
 import { ConfigurationInterface } from 'interfaces';
+import * as G2 from '@antv/g2';
 
 @Injectable({
   providedIn: 'root'
@@ -62,6 +63,7 @@ export class StatusService {
    * @param router
    */
   boot(router: Router): Promise<ConfigurationInterface> {
+    (G2.track as any) = () => {};
     return this.httpClient
       .get<ConfigurationInterface>(`${BASE_URL}/config`)
       .pipe(

@@ -17,6 +17,38 @@
   -->
 
 <ng-container *ngIf="taskManagerDetail">
+  <nz-card nzTitle="Hardware">
+    <nz-table
+      [nzTemplateMode]="true"
+      [nzShowPagination]="false"
+      [nzSize]="'small'"
+      class="no-border">
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Value</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>CPU Cores</strong></td>
+          <td>{{ taskManagerDetail.hardware.cpuCores }}</td>
+        </tr>
+        <tr>
+          <td><strong>Physical Memory</strong></td>
+          <td>{{ taskManagerDetail.hardware.physicalMemory | humanizeBytes }}</td>
+        </tr>
+        <tr>
+          <td><strong>JVM Heap Size</strong></td>
+          <td>{{ taskManagerDetail.hardware.freeMemory | humanizeBytes }}</td>
+        </tr>
+        <tr>
+          <td><strong>Flink Managed Memory</strong></td>
+          <td>{{ taskManagerDetail.hardware.managedMemory | humanizeBytes }}</td>
+        </tr>
+      </tbody>
+    </nz-table>
+  </nz-card>
   <nz-card nzTitle="Memory">
     <nz-card nzType="inner" nzTitle="JVM (Heap/Non-Heap)">
       <nz-table
@@ -65,7 +97,7 @@
             <th>Type</th>
             <th>Count</th>
             <th>Used</th>
-            <th>Capacity</th>
+            <th>Maximum</th>
           </tr>
         </thead>
         <tbody>
@@ -104,30 +136,6 @@
           <tr>
             <td><strong>Total</strong></td>
             <td>{{ taskManagerDetail.metrics.memorySegmentsTotal | number }}</td>
-          </tr>
-        </tbody>
-      </nz-table>
-    </nz-card>
-    <nz-card nzType="inner" nzTitle="Managed Memory Segments">
-      <nz-table
-        [nzTemplateMode]="true"
-        [nzShowPagination]="false"
-        [nzSize]="'small'"
-        class="no-border">
-        <thead>
-          <tr>
-            <th>Type</th>
-            <th>Count</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td><strong>Available</strong></td>
-            <td>{{ taskManagerDetail.metrics.manageMemorySegmentsAvailable | number }}</td>
-          </tr>
-          <tr>
-            <td><strong>Total</strong></td>
-            <td>{{ taskManagerDetail.metrics.manageMemorySegmentsTotal | number }}</td>
           </tr>
         </tbody>
       </nz-table>

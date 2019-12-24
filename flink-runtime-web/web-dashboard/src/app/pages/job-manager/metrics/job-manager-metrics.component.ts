@@ -16,31 +16,25 @@
  * limitations under the License.
  */
 
-import { ChangeDetectorRef, Component, OnInit, ViewChild, ChangeDetectionStrategy } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { JobManagerMetricInterface } from 'interfaces';
 import { JobManagerService } from 'services';
-import { MonacoEditorComponent } from 'share/common/monaco-editor/monaco-editor.component';
 
 @Component({
-  selector: 'flink-job-manager-stdout',
-  templateUrl: './job-manager-stdout.component.html',
-  styleUrls: ['./job-manager-stdout.component.less'],
+  selector: 'flink-job-manager-metrics',
+  templateUrl: './job-manager-metrics.component.html',
+  styleUrls: ['./job-manager-metrics.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class JobManagerStdoutComponent implements OnInit {
-  @ViewChild(MonacoEditorComponent) monacoEditorComponent: MonacoEditorComponent;
-  stdout = '';
-
-  reload() {
-    this.jobManagerService.loadStdout().subscribe(data => {
-      this.monacoEditorComponent.layout();
-      this.stdout = data;
-      this.cdr.markForCheck();
-    });
-  }
+export class JobManagerMetricsComponent implements OnInit {
+  jobManagerMetric: JobManagerMetricInterface;
 
   constructor(private jobManagerService: JobManagerService, private cdr: ChangeDetectorRef) {}
 
   ngOnInit() {
-    this.reload();
+    this.jobManagerService.loadMetric().subscribe(data => {
+      this.jobManagerMetric = data;
+      this.cdr.markForCheck();
+    });
   }
 }

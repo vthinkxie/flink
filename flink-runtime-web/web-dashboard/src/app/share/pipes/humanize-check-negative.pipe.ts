@@ -15,14 +15,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-@import "theme";
 
-flink-monaco-editor {
-  height: calc(~"100vh - 310px");
-}
+import { Pipe, PipeTransform } from '@angular/core';
 
-:host {
-  position: relative;
-  display: block;
-  border: 1px solid @border-color-split;
+@Pipe({
+  name: 'humanizeCheckNegative'
+})
+export class HumanizeCheckNegative implements PipeTransform {
+  transform(value: number | string): any {
+    if (+value < 0) {
+      return '-';
+    } else {
+      return value;
+    }
+  }
 }

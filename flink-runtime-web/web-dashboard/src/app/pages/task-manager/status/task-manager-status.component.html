@@ -40,26 +40,6 @@
       <span>Free Slots / All Slots:</span>
       <span>{{ taskManagerDetail.freeSlots }} / {{ taskManagerDetail.slotsNumber }}</span>
     </div>
-    <nz-divider [nzType]="'vertical'"></nz-divider>
-    <div class="field">
-      <span>CPU Cores:</span>
-      <span>{{ taskManagerDetail.hardware.cpuCores }}</span>
-    </div>
-    <nz-divider [nzType]="'vertical'"></nz-divider>
-    <div class="field">
-      <span>Physical Memory:</span>
-      <span>{{ taskManagerDetail.hardware.physicalMemory | humanizeBytes }}</span>
-    </div>
-    <nz-divider [nzType]="'vertical'"></nz-divider>
-    <div class="field">
-      <span>JVM Heap Size:</span>
-      <span>{{ taskManagerDetail.hardware.freeMemory | humanizeBytes }}</span>
-    </div>
-    <nz-divider [nzType]="'vertical'"></nz-divider>
-    <div class="field">
-      <span>Flink Managed Memory:</span>
-      <span>{{ taskManagerDetail.hardware.managedMemory | humanizeBytes }}</span>
-    </div>
   </div>
   <flink-navigation [listOfNavigation]="listOfNavigation"></flink-navigation>
 </div>

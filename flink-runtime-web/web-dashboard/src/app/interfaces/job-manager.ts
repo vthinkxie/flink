@@ -16,11 +16,18 @@
  * limitations under the License.
  */
 
-flink-monaco-editor {
-  height: calc(~"100vh - 160px");
-}
-
-:host {
-  position: relative;
-  display: block;
+export interface JobManagerMetricInterface {
+  heapUsed: number;
+  heapCommitted: number;
+  heapMax: number;
+  nonHeapUsed: number;
+  nonHeapCommitted: number;
+  nonHeapMax: number;
+  directCount: number;
+  directUsed: number;
+  directMax: number;
+  mappedCount: number;
+  mappedUsed: number;
+  mappedMax: number;
+  garbageCollectors: { name: string; count: number; time: number }[];
 }

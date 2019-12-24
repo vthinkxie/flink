@@ -44,7 +44,7 @@ export class AppInterceptor implements HttpInterceptor {
           this.injector.get<StatusService>(StatusService).listOfErrorMessage.push(errorMessage);
           this.injector
             .get<NzNotificationService>(NzNotificationService)
-            .info('Server Response Message:', errorMessage);
+            .info('Server Response Message:', errorMessage, { nzDuration: 0 });
         }
         return throwError(res);
       })

@@ -59,13 +59,6 @@ export class MonacoEditorComponent implements AfterViewInit, OnDestroy {
         enabled: false
       }
     });
-    console.log(this.editor.getLayoutInfo());
-    this.editor.onDidLayoutChange(e => {
-      console.log(e);
-    });
-    this.editor.onDidScrollChange(e => {
-      console.log(e);
-    });
     if (this.value) {
       this.editor.getModel()!.setValue(this.value);
     }
@@ -112,6 +105,8 @@ export class MonacoEditorComponent implements AfterViewInit, OnDestroy {
   ngOnDestroy() {
     this.destroy$.next();
     this.destroy$.complete();
-    this.editor.dispose();
+    if (this.editor) {
+      this.editor.dispose();
+    }
   }
 }
