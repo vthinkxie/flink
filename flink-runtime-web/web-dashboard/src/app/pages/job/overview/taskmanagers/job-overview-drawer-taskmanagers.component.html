@@ -45,7 +45,7 @@
       <td nzLeft="160px">
         <span *ngIf="!taskManager['taskmanager-id'] || taskManager['taskmanager-id'] === '(unassigned)'; else hrefTpl">-</span>
         <ng-template #hrefTpl>
-          <a [routerLink]="['/task-manager',taskManager['taskmanager-id'],'logs']" target="_blank">LOG</a>
+          <a [routerLink]="['/task-manager',taskManager['taskmanager-id'],'log','taskmanager.log']" target="_blank">LOG</a>
         </ng-template>
       </td>
       <td>

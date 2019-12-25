@@ -61,6 +61,9 @@ interface Metrics {
   mappedCount: number;
   mappedUsed: number;
   mappedMax: number;
+  managedMemoryUsed: number;
+  managedMemoryTotal: number;
+  cpuUsed: number;
   memorySegmentsAvailable: number;
   memorySegmentsTotal: number;
   garbageCollectors: GarbageCollectorsItem[];

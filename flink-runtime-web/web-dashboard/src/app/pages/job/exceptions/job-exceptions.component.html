@@ -33,6 +33,7 @@
           <th>Time</th>
           <th>Name</th>
           <th>Location</th>
+          <th>Action</th>
         </tr>
       </thead>
       <tbody>
@@ -41,20 +42,28 @@
             <td nzShowExpand [(nzExpand)]="exception.expand"></td>
             <td>{{exception.timestamp | date:'yyyy-MM-dd HH:mm:ss:SSS'}}</td>
             <td>
-              <div class="name">
-                {{exception.task}}
-              </div>
+              <a [routerLink]="['../','overview',exception['vertex-id'],'detail']" target="_blank">{{exception.task}}</a>
             </td>
             <td>{{exception.location}}</td>
+            <td>
+              <nz-dropdown [nzPlacement]="'bottomRight'">
+                <span nz-dropdown><i nz-icon nzType="ellipsis" nzTheme="outline"></i></span>
+                <ul nz-menu>
+                  <li nz-menu-item >
+                    <a [routerLink]="['/task-manager',exception['taskmanager-id'],'log','taskmanager.log']" target="_blank">View taskmanager log</a>
+                  </li>
+                </ul>
+              </nz-dropdown>
+            </td>
           </tr>
           <tr [nzExpand]="exception.expand">
-            <td colspan="6" class="expand-td">
+            <td colspan="5" class="expand-td">
               <flink-monaco-editor *ngIf="exception.expand" class="subtask" [value]="exception.exception"></flink-monaco-editor>
             </td>
           </tr>
         </ng-container>
         <tr *ngIf="truncated">
-          <td colspan="6">
+          <td colspan="5">
             <button nz-button nzBlock nzType="primary" nzGhost (click)="loadMore()" [nzLoading]="isLoading">Load More</button>
           </td>
         </tr>

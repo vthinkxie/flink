@@ -31,4 +31,5 @@ export interface JobExceptionItemInterface {
   task: string;
   timestamp: number;
   'vertex-id': string;
+  'taskmanager-id': string;
 }
