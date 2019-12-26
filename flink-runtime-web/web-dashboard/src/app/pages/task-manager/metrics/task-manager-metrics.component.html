@@ -17,150 +17,209 @@
   -->
 
 <ng-container *ngIf="taskManagerDetail">
-  <nz-card nzTitle="Hardware">
-    <nz-table
-      [nzTemplateMode]="true"
-      [nzShowPagination]="false"
-      [nzSize]="'small'"
-      class="no-border">
-      <thead>
-        <tr>
-          <th>Type</th>
-          <th>Value</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td><strong>CPU Cores</strong></td>
-          <td>{{ taskManagerDetail.hardware.cpuCores }}</td>
-        </tr>
-        <tr>
-          <td><strong>Physical Memory</strong></td>
-          <td>{{ taskManagerDetail.hardware.physicalMemory | humanizeBytes }}</td>
-        </tr>
-        <tr>
-          <td><strong>JVM Heap Size</strong></td>
-          <td>{{ taskManagerDetail.hardware.freeMemory | humanizeBytes }}</td>
-        </tr>
-        <tr>
-          <td><strong>Flink Managed Memory</strong></td>
-          <td>{{ taskManagerDetail.hardware.managedMemory | humanizeBytes }}</td>
-        </tr>
-      </tbody>
-    </nz-table>
+  <nz-card nzTitle="JVM Memory">
+    <div class="info-container">
+      <flink-progress-state header="Heap"
+        [used]="taskManagerDetail.metrics.heapUsed"
+        [max]="taskManagerDetail.metrics.heapMax"
+        [committed]="taskManagerDetail.metrics.heapCommitted">
+      </flink-progress-state>
+      <flink-progress-state header="Non-Heap"
+        [used]="taskManagerDetail.metrics.nonHeapUsed"
+        [max]="taskManagerDetail.metrics.nonHeapMax"
+        [committed]="taskManagerDetail.metrics.nonHeapCommitted">
+      </flink-progress-state>
+      <flink-progress-state header="Total"
+        [used]="taskManagerDetail.metrics.heapCommitted + taskManagerDetail.metrics.nonHeapCommitted"
+        [max]="taskManagerDetail.metrics.heapMax + taskManagerDetail.metrics.nonHeapMax"
+        [committed]="taskManagerDetail.metrics.heapCommitted + taskManagerDetail.metrics.nonHeapCommitted">
+      </flink-progress-state>
+    </div>
+    <nz-divider></nz-divider>
+    <div nz-row nzGutter="16">
+      <div nz-col nzSpan="12">
+        <nz-card nzType="inner" class="card-inner" nzTitle="Heap">
+          <div nz-row nzGutter="12">
+            <div nz-col nzSpan="12">
+              <nz-card nzType="inner" class="card-inner" nzTitle="Framework Heap">
+                <nz-card nzType="inner" class="card-inner" nzTitle="Configuration">
+                  {{ taskManagerDetail.resource.frameworkHeap | humanizeBytes }}
+                </nz-card>
+              </nz-card>
+            </div>
+            <div nz-col nzSpan="12">
+              <nz-card nzType="inner" class="card-inner" nzTitle="Task Heap">
+                <nz-card nzType="inner" class="card-inner" nzTitle="Configuration">
+                  {{ taskManagerDetail.resource.taskHeap | humanizeBytes }}
+                </nz-card>
+              </nz-card>
+            </div>
+          </div>
+        </nz-card>
+      </div>
+      <div nz-col nzSpan="12">
+        <nz-card nzType="inner" class="card-inner" nzTitle="Non-Heap">
+          <div nz-row nzGutter="12">
+            <div nz-col nzSpan="12">
+              <nz-card nzType="inner" nzTitle="JVM MetaSpace">
+                <nz-card nzType="inner" class="card-inner" nzTitle="Configuration">
+                  {{ taskManagerDetail.resource.jvmMetaSpace | humanizeBytes }}
+                </nz-card>
+              </nz-card>
+            </div>
+            <div nz-col nzSpan="12">
+              <nz-card nzType="inner" nzTitle="JVM Overhead">
+                <nz-card nzType="inner" class="card-inner" nzTitle="Configuration">
+                  {{ taskManagerDetail.resource.jvmOverhead | humanizeBytes }}
+                </nz-card>
+              </nz-card>
+            </div>
+          </div>
+        </nz-card>
+      </div>
+    </div>
   </nz-card>
-  <nz-card nzTitle="Memory">
-    <nz-card nzType="inner" nzTitle="JVM (Heap/Non-Heap)">
-      <nz-table
-        [nzTemplateMode]="true"
-        [nzShowPagination]="false"
-        [nzSize]="'small'"
-        class="no-border">
-        <thead>
-          <tr>
-            <th>Type</th>
-            <th>Committed</th>
-            <th>Used</th>
-            <th>Maximum</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td><strong>Heap</strong></td>
-            <td>{{ taskManagerDetail.metrics.heapCommitted | humanizeBytes }}</td>
-            <td>{{ taskManagerDetail.metrics.heapUsed | humanizeBytes }}</td>
-            <td>{{ taskManagerDetail.metrics.heapMax | humanizeBytes }}</td>
-          </tr>
-          <tr>
-            <td><strong>Non-Heap</strong></td>
-            <td>{{ taskManagerDetail.metrics.nonHeapCommitted | humanizeBytes }}</td>
-            <td>{{ taskManagerDetail.metrics.nonHeapUsed | humanizeBytes }}</td>
-            <td>{{ taskManagerDetail.metrics.nonHeapMax | humanizeBytes }}</td>
-          </tr>
-          <tr>
-            <td><strong>Total</strong></td>
-            <td>{{ (taskManagerDetail.metrics.heapCommitted + taskManagerDetail.metrics.nonHeapCommitted) | humanizeBytes }}</td>
-            <td>{{ (taskManagerDetail.metrics.heapUsed + taskManagerDetail.metrics.nonHeapUsed) | humanizeBytes }}</td>
-            <td>{{ (taskManagerDetail.metrics.heapMax + taskManagerDetail.metrics.nonHeapMax) | humanizeBytes }}</td>
-          </tr>
-        </tbody>
-      </nz-table>
-    </nz-card>
-    <nz-card nzType="inner" nzTitle="Outside JVM">
-      <nz-table
-        [nzTemplateMode]="true"
-        [nzShowPagination]="false"
-        [nzSize]="'small'"
-        class="no-border">
-        <thead>
-          <tr>
-            <th>Type</th>
-            <th>Count</th>
-            <th>Used</th>
-            <th>Maximum</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td><strong>Direct</strong></td>
-            <td>{{ taskManagerDetail.metrics.directCount | number }}</td>
-            <td>{{ taskManagerDetail.metrics.directUsed | humanizeBytes }}</td>
-            <td>{{ taskManagerDetail.metrics.directMax | humanizeBytes }}</td>
-          </tr>
-          <tr>
-            <td><strong>Mapped</strong></td>
-            <td>{{ taskManagerDetail.metrics.mappedCount | number }}</td>
-            <td>{{ taskManagerDetail.metrics.mappedUsed | humanizeBytes }}</td>
-            <td>{{ taskManagerDetail.metrics.mappedMax | humanizeBytes }}</td>
-          </tr>
-        </tbody>
-      </nz-table>
-    </nz-card>
-    <nz-card nzType="inner" nzTitle="Network Memory Segments">
-      <nz-table
-        [nzTemplateMode]="true"
-        [nzShowPagination]="false"
-        [nzSize]="'small'"
-        class="no-border">
-        <thead>
-          <tr>
-            <th>Type</th>
-            <th>Count</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td><strong>Available</strong></td>
-            <td>{{ taskManagerDetail.metrics.memorySegmentsAvailable | number }}</td>
-          </tr>
-          <tr>
-            <td><strong>Total</strong></td>
-            <td>{{ taskManagerDetail.metrics.memorySegmentsTotal | number }}</td>
-          </tr>
-        </tbody>
-      </nz-table>
-    </nz-card>
-    <nz-card nzType="inner" nzTitle="Garbage Collection">
-      <nz-table
-        [nzTemplateMode]="true"
-        [nzShowPagination]="false"
-        [nzSize]="'small'"
-        class="no-border">
-        <thead>
-          <tr>
-            <th>Collector</th>
-            <th>Count</th>
-            <th>Time</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let g of taskManagerDetail.metrics.garbageCollectors">
-            <td><strong>{{ g.name }}</strong></td>
-            <td>{{ g.count | number }}</td>
-            <td>{{ g.time | number }}</td>
-          </tr>
-        </tbody>
-      </nz-table>
-    </nz-card>
+  <nz-card nzTitle="Outside JVM Memory">
+    <div class="info-container">
+      <flink-progress-state header="Directed"
+        [used]="taskManagerDetail.metrics.directUsed"
+        [max]="taskManagerDetail.metrics.directMax"
+        [count]="taskManagerDetail.metrics.directCount">
+      </flink-progress-state>
+      <flink-progress-state header="Mapped"
+        [used]="taskManagerDetail.metrics.mappedUsed"
+        [max]="taskManagerDetail.metrics.mappedMax"
+        [count]="taskManagerDetail.metrics.mappedCount">
+      </flink-progress-state>
+      <flink-progress-state header="Managed"
+        [used]="taskManagerDetail.metrics.managedMemoryUsed"
+        [max]="taskManagerDetail.metrics.managedMemoryTotal">
+      </flink-progress-state>
+    </div>
+    <nz-divider></nz-divider>
+    <div nz-row nzGutter="16">
+      <div nz-col nzSpan="17">
+        <nz-card nzType="inner" class="card-inner" nzTitle="Direct">
+          <div nz-row nzGutter="12">
+            <div nz-col nzSpan="5">
+              <nz-card nzType="inner" class="card-inner" nzTitle="Framework OffHeap">
+                <nz-card nzType="inner" class="card-inner" nzTitle="Configuration">
+                  {{ taskManagerDetail.resource.frameworkOffHeap | humanizeBytes }}
+                </nz-card>
+              </nz-card>
+            </div>
+            <div nz-col nzSpan="4">
+              <nz-card nzType="inner" class="card-inner" nzTitle="Task OffHeap">
+                <nz-card nzType="inner" class="card-inner" nzTitle="Configuration">
+                  {{ taskManagerDetail.resource.taskOffHeap | humanizeBytes }}
+                </nz-card>
+              </nz-card>
+            </div>
+            <div nz-col nzSpan="15">
+                <nz-card nzType="inner" nzTitle="Shuffle">
+                  <div nz-row nzGutter="12">
+                    <div nz-col nzSpan="6">
+                      <nz-card nzType="inner" class="card-inner" nzTitle="Configuration">
+                        {{ taskManagerDetail.resource.shuffleMemory | humanizeBytes }}
+                      </nz-card>
+                    </div>
+                    <div nz-col nzSpan="9">
+                      <nz-card nzType="inner" class="card-inner small" nzTitle="Segments">
+                        <dl>
+                          <dd>Used</dd>
+                          <dt>{{(taskManagerDetail.metrics.memorySegmentsTotal - taskManagerDetail.metrics.memorySegmentsAvailable) | number}}</dt>
+                          <dd>Total</dd>
+                          <dt>{{taskManagerDetail.metrics.memorySegmentsTotal | number}}</dt>
+                        </dl>
+                      </nz-card>
+                    </div>
+                    <div nz-col nzSpan="9">
+                      <nz-card nzType="inner" class="card-inner small" nzTitle="Memory">
+                        <dl>
+                          <dd>Used</dd>
+                          <dt>{{taskManagerDetail.metrics.shuffleMemoryUsed | humanizeBytes}}</dt>
+                          <dd>Total</dd>
+                          <dt>{{taskManagerDetail.metrics.shuffleMemoryTotal | humanizeBytes}}</dt>
+                        </dl>
+                      </nz-card>
+                    </div>
+                  </div>
+                </nz-card>
+              </div>
+          </div>
+        </nz-card>
+      </div>
+      <div nz-col nzSpan="7">
+        <nz-card nzType="inner" class="card-inner" nzTitle="Other">
+          <nz-card nzType="inner" class="card-inner" nzTitle="Managed">
+            <nz-card nzType="inner" class="card-inner" nzTitle="Configuration">
+              {{ taskManagerDetail.resource.managedMemory | humanizeBytes }}
+            </nz-card>
+          </nz-card>
+        </nz-card>
+      </div>
+    </div>
   </nz-card>
+  <div nz-row nzGutter="16">
+    <div nz-col nzSpan="12">
+      <nz-card nzType="inner" nzTitle="Garbage Collection">
+        <nz-table
+          [nzTemplateMode]="true"
+          [nzShowPagination]="false"
+          [nzSize]="'small'"
+          class="no-border">
+          <thead>
+            <tr>
+              <th>Collector</th>
+              <th>Count</th>
+              <th>Time</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let g of taskManagerDetail.metrics.garbageCollectors">
+              <td><strong>{{ g.name }}</strong></td>
+              <td>{{ g.count | number }}</td>
+              <td>{{ g.time | number }}</td>
+            </tr>
+          </tbody>
+        </nz-table>
+      </nz-card>
+    </div>
+    <div nz-col nzSpan="12">
+      <nz-card nzType="inner" nzTitle="Hardware">
+        <nz-table
+          [nzTemplateMode]="true"
+          [nzShowPagination]="false"
+          [nzSize]="'small'"
+          class="no-border">
+          <thead>
+            <tr>
+              <th>Type</th>
+              <th>Value</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>CPU Cores</strong></td>
+              <td>{{ taskManagerDetail.hardware.cpuCores }}</td>
+            </tr>
+            <tr>
+              <td><strong>Physical Memory</strong></td>
+              <td>{{ taskManagerDetail.hardware.physicalMemory | humanizeBytes }}</td>
+            </tr>
+            <tr>
+              <td><strong>JVM Heap Size</strong></td>
+              <td>{{ taskManagerDetail.hardware.freeMemory | humanizeBytes }}</td>
+            </tr>
+            <tr>
+              <td><strong>Flink Managed Memory</strong></td>
+              <td>{{ taskManagerDetail.hardware.managedMemory | humanizeBytes }}</td>
+            </tr>
+          </tbody>
+        </nz-table>
+      </nz-card>
+    </div>
+  </div>
+
+
 </ng-container>

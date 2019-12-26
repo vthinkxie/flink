@@ -1,0 +1,36 @@
+:host {
+  padding: 0 12px;
+  display: flex;
+  flex: 1 1 auto;
+  overflow: hidden;
+  .left {
+    flex: auto;
+    nz-divider {
+      margin: 12px 0 0 0;
+      width: calc(~"100% + 10px");
+    }
+  }
+  .right {
+    flex: 0 0 180px;
+  }
+  dl {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    grid-gap: 0rem 2rem;
+    font-size: 12px;
+    margin-top: 1rem;
+    dd {
+      font-weight: 500;
+    }
+    dt {
+      font-weight: normal;
+      position: relative;
+      white-space: nowrap;
+      &:before {
+        content: ':';
+        left: -1rem;
+        position: absolute;
+      }
+    }
+  }
+}

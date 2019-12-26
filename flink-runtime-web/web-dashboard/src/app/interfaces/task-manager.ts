@@ -29,6 +29,7 @@ export interface TaskManagerDetailInterface {
   freeSlots: number;
   hardware: Hardware;
   metrics: Metrics;
+  resource: Resource;
 }
 
 export interface TaskmanagersItemInterface {
@@ -46,6 +47,19 @@ interface Hardware {
   physicalMemory: number;
   freeMemory: number;
   managedMemory: number;
+}
+
+interface Resource {
+  cpuCores: number;
+  frameworkHeap: number;
+  frameworkOffHeap: number;
+  taskHeap: number;
+  taskOffHeap: number;
+  shuffleMemory: number;
+  managedMemory: number;
+  jvmMetaSpace: number;
+  jvmOverhead: number;
+  totalProcessMemory: number;
 }
 
 interface Metrics {
@@ -66,6 +80,8 @@ interface Metrics {
   cpuUsed: number;
   memorySegmentsAvailable: number;
   memorySegmentsTotal: number;
+  shuffleMemoryUsed: number;
+  shuffleMemoryTotal: number;
   garbageCollectors: GarbageCollectorsItem[];
 }
 

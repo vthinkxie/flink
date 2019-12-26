@@ -1,0 +1,21 @@
+<div class="left">
+  <h3>{{header}}</h3>
+  <nz-divider></nz-divider>
+  <dl>
+    <dd>Used</dd>
+    <dt>{{ used | humanizeBytes }}</dt>
+    <dd>Maximum</dd>
+    <dt>{{ max | humanizeBytes }}</dt>
+    <ng-container *ngIf="showCommitted">
+      <dd>Committed</dd>
+      <dt>{{ committed | humanizeBytes }}</dt>
+    </ng-container>
+    <ng-container *ngIf="showCount">
+      <dd>Count</dd>
+      <dt>{{ count | humanizeBytes }}</dt>
+    </ng-container>
+  </dl>
+</div>
+<div class="right">
+  <nz-progress nzStrokeLinecap="square" nzType="circle" [nzPercent]="percent" nzStatus="normal"></nz-progress>
+</div>
