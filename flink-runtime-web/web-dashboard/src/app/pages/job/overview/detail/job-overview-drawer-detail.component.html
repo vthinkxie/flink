@@ -44,7 +44,7 @@
         <dd>Out Pool</dd>
         <dt>
           <span *ngIf="node.detail.metrics['out-pool-usage-avg-complete'];else loadingTemplate">
-            <nz-progress [nzPercent]="node.detail.metrics['out-pool-usage-avg'] * 100" nzStatus="normal" nzSize="small"></nz-progress>
+            <nz-progress nzStrokeLinecap="square" [nzPercent]="node.detail.metrics['out-pool-usage-avg'] * 100" nzStatus="normal" nzSize="small"></nz-progress>
           </span>
         </dt>
       </dl>
@@ -87,14 +87,14 @@
         <dd>Input Exclusive Buffers</dd>
         <dt>
           <span *ngIf="node.detail.metrics['input-exclusive-buffers-usage-avg-complete'];else loadingTemplate">
-            <nz-progress [nzPercent]="node.detail.metrics['input-exclusive-buffers-usage-avg'] * 100" nzStatus="normal" nzSize="small"></nz-progress>
+            <nz-progress nzStrokeLinecap="square" [nzPercent]="node.detail.metrics['input-exclusive-buffers-usage-avg'] * 100" nzStatus="normal" nzSize="small"></nz-progress>
           </span>
         </dt>
 
         <dd>Input Floating Buffers</dd>
         <dt>
           <span *ngIf="node.detail.metrics['input-floating-buffers-usage-avg-complete'];else loadingTemplate">
-            <nz-progress [nzPercent]="node.detail.metrics['input-floating-buffers-usage-avg'] * 100" nzStatus="normal" nzSize="small"></nz-progress>
+            <nz-progress nzStrokeLinecap="square" [nzPercent]="node.detail.metrics['input-floating-buffers-usage-avg'] * 100" nzStatus="normal" nzSize="small"></nz-progress>
           </span>
         </dt>
       </dl>

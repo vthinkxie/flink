@@ -39,7 +39,7 @@
           <dd>Physical Memory</dd>
           <dt>{{ taskManagerDetail.hardware.physicalMemory | humanizeBytes }}</dt>
           <dd>Free Slots / All Slots</dd>
-          <dt><nz-progress class="slot-percent" nzStatus="normal" [nzPercent]="slotPercent" nzSize="small" [nzShowInfo]="false"></nz-progress> {{ taskManagerDetail.freeSlots }} / {{ taskManagerDetail.slotsNumber }}</dt>
+          <dt><nz-progress nzStrokeLinecap="square" class="slot-percent" nzStatus="normal" [nzPercent]="slotPercent" nzSize="small" [nzShowInfo]="false"></nz-progress> {{ taskManagerDetail.freeSlots }} / {{ taskManagerDetail.slotsNumber }}</dt>
         </dl>
       </div>
     </div>

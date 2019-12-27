@@ -4,8 +4,14 @@
   <dl>
     <dd>Used</dd>
     <dt>{{ used | humanizeBytes }}</dt>
-    <dd>Maximum</dd>
-    <dt>{{ max | humanizeBytes }}</dt>
+    <ng-container *ngIf="showMax">
+      <dd>Maximum</dd>
+      <dt>{{ max | humanizeBytes }}</dt>
+    </ng-container>
+    <ng-container *ngIf="showConfig">
+      <dd>Configure</dd>
+      <dt>{{ config | humanizeBytes }}</dt>
+    </ng-container>
     <ng-container *ngIf="showCommitted">
       <dd>Committed</dd>
       <dt>{{ committed | humanizeBytes }}</dt>

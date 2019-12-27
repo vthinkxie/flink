@@ -29,11 +29,6 @@
         [max]="jobManagerMetric.nonHeapMax"
         [committed]="jobManagerMetric.nonHeapCommitted">
       </flink-progress-state>
-      <flink-progress-state header="Total"
-        [used]="jobManagerMetric.heapCommitted + jobManagerMetric.nonHeapCommitted"
-        [max]="jobManagerMetric.heapMax + jobManagerMetric.nonHeapMax"
-        [committed]="jobManagerMetric.heapCommitted + jobManagerMetric.nonHeapCommitted">
-      </flink-progress-state>
     </div>
   </nz-card>
   <nz-card nzTitle="Outside JVM Memory">

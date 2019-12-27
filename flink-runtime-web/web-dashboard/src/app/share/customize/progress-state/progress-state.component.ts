@@ -12,15 +12,25 @@ export class ProgressStateComponent implements OnChanges {
   @Input() used = 0;
   @Input() count = 0;
   @Input() max = 0;
+  @Input() config = 0;
   @Input() committed = 0;
   showCount = false;
+  showConfig = false;
   showCommitted = false;
+  showMax = false;
 
   ngOnChanges(changes: SimpleChanges): void {
-    this.percent = this.max > 0 && this.used > 0 ? +((this.used / this.max) * 100).toFixed(1) : 0;
-    const { count, committed } = changes;
+    const maxData = this.max || this.config;
+    this.percent = maxData > 0 && this.used > 0 ? +((this.used / maxData) * 100).toFixed(1) : 0;
+    const { count, committed, config, max } = changes;
+    if (max) {
+      this.showMax = true;
+    }
     if (count) {
       this.showCount = true;
+    }
+    if (config) {
+      this.showConfig = true;
     }
     if (committed) {
       this.showCommitted = true;

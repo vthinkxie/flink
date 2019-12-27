@@ -90,7 +90,7 @@
     <div class="info-container">
       <flink-progress-state header="Directed"
         [used]="taskManagerDetail.metrics.directUsed"
-        [max]="taskManagerDetail.resource.frameworkOffHeap + taskManagerDetail.resource.taskOffHeap + taskManagerDetail.resource.shuffleMemory"
+        [config]="taskManagerDetail.resource.frameworkOffHeap + taskManagerDetail.resource.taskOffHeap + taskManagerDetail.resource.shuffleMemory"
         [count]="taskManagerDetail.metrics.directCount">
       </flink-progress-state>
       <flink-progress-state header="Mapped"
