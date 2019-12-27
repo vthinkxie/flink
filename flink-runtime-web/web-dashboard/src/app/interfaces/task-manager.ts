@@ -85,7 +85,7 @@ interface Metrics {
   garbageCollectors: GarbageCollectorsItem[];
 }
 
-interface GarbageCollectorsItem {
+export interface GarbageCollectorsItem {
   name: string;
   count: number;
   time: number;

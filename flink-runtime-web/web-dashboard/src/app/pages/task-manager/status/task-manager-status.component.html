@@ -21,24 +21,27 @@
     <h2>{{ taskManagerDetail.path }}</h2>
   </div>
   <div class="status">
-    <div class="field">
-      <span>Last Heartbeat:</span>
-      <span>{{ taskManagerDetail.timeSinceLastHeartbeat | date:'yy-MM-dd HH:mm:ss' }}</span>
-    </div>
-    <nz-divider [nzType]="'vertical'"></nz-divider>
-    <div class="field">
-      <span>ID:</span>
-      <span>{{ taskManagerDetail.id }}</span>
-    </div>
-    <nz-divider [nzType]="'vertical'"></nz-divider>
-    <div class="field">
-      <span>Data Port:</span>
-      <span>{{ taskManagerDetail.dataPort }}</span>
-    </div>
-    <nz-divider [nzType]="'vertical'"></nz-divider>
-    <div class="field">
-      <span>Free Slots / All Slots:</span>
-      <span>{{ taskManagerDetail.freeSlots }} / {{ taskManagerDetail.slotsNumber }}</span>
+    <div nz-row>
+      <div nz-col nzSpan="12">
+        <dl>
+          <dd>ID</dd>
+          <dt>{{ taskManagerDetail.id }}</dt>
+          <dd>Last Heartbeat</dd>
+          <dt>{{ taskManagerDetail.timeSinceLastHeartbeat | date:'yyyy-MM-dd HH:mm:ss' }}</dt>
+          <dd>Data Port</dd>
+          <dt>{{ taskManagerDetail.dataPort }}</dt>
+        </dl>
+      </div>
+      <div nz-col nzSpan="12">
+        <dl>
+          <dd>Physical CPU Cores</dd>
+          <dt>{{ taskManagerDetail.hardware.cpuCores }}</dt>
+          <dd>Physical Memory</dd>
+          <dt>{{ taskManagerDetail.hardware.physicalMemory | humanizeBytes }}</dt>
+          <dd>Free Slots / All Slots</dd>
+          <dt><nz-progress class="slot-percent" nzStatus="normal" [nzPercent]="slotPercent" nzSize="small" [nzShowInfo]="false"></nz-progress> {{ taskManagerDetail.freeSlots }} / {{ taskManagerDetail.slotsNumber }}</dt>
+        </dl>
+      </div>
     </div>
   </div>
   <flink-navigation [listOfNavigation]="listOfNavigation"></flink-navigation>

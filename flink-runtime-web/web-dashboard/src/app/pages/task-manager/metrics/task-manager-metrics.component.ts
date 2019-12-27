@@ -17,7 +17,7 @@
  */
 
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
-import { TaskManagerDetailInterface } from 'interfaces';
+import { GarbageCollectorsItem, TaskManagerDetailInterface } from 'interfaces';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { TaskManagerService } from 'services';
@@ -32,6 +32,9 @@ export class TaskManagerMetricsComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject();
   taskManagerDetail: TaskManagerDetailInterface;
 
+  trackByName(_: number, node: GarbageCollectorsItem) {
+    return node.name;
+  }
   constructor(private taskManagerService: TaskManagerService, private cdr: ChangeDetectorRef) {}
 
   ngOnInit(): void {
