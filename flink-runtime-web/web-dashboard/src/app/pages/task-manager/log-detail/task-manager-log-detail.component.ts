@@ -14,16 +14,20 @@
  *   limitations under the License.
  */
 
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { TaskManagerDetailInterface } from 'interfaces';
 import { TaskManagerService } from 'services';
 import { first } from 'rxjs/operators';
+import { MonacoEditorComponent } from 'share/common/monaco-editor/monaco-editor.component';
 
 @Component({
   selector: 'flink-task-manager-log-detail',
   templateUrl: './task-manager-log-detail.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  host: {
+    '[class.full-screen]': 'isFullScreen'
+  },
   styleUrls: ['./task-manager-log-detail.component.less']
 })
 export class TaskManagerLogDetailComponent implements OnInit {
@@ -32,6 +36,8 @@ export class TaskManagerLogDetailComponent implements OnInit {
   downloadUrl = '';
   isLoading = false;
   taskManagerDetail: TaskManagerDetailInterface;
+  isFullScreen = false;
+  @ViewChild(MonacoEditorComponent) monacoEditorComponent: MonacoEditorComponent;
 
   constructor(
     private taskManagerService: TaskManagerService,
@@ -55,6 +61,11 @@ export class TaskManagerLogDetailComponent implements OnInit {
       }
     );
   }
+  toggleFullScreen(fullScreen: boolean) {
+    this.isFullScreen = fullScreen;
+    setTimeout(() => this.monacoEditorComponent.layout());
+  }
+
   ngOnInit() {
     this.logName = this.activatedRoute.snapshot.params.logName;
     this.taskManagerService.taskManagerDetail$.pipe(first()).subscribe(data => {

@@ -19,6 +19,18 @@
 :host {
   display: block;
   height: 100%;
+  &.full-screen {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    background: @component-background;
+    z-index: 99;
+    flink-monaco-editor {
+      height: calc(~"100vh - 65px");
+    }
+  }
 }
 
 flink-monaco-editor {

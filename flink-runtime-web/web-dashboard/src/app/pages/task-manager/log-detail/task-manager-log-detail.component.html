@@ -23,6 +23,6 @@
       {{ logName }}
     </nz-breadcrumb-item>
   </nz-breadcrumb>
-  <flink-refresh-download [isLoading]="isLoading" [downloadHref]="downloadUrl" [downloadName]="logName" (reload)="reload()"></flink-refresh-download>
+  <flink-refresh-download [isLoading]="isLoading" [downloadHref]="downloadUrl" [downloadName]="logName" (reload)="reload()" (fullScreen)="toggleFullScreen($event)"></flink-refresh-download>
 </div>
 <flink-monaco-editor [value]="logs"></flink-monaco-editor>

@@ -22,3 +22,12 @@
 </ng-template>
 <nz-divider nzType="vertical"></nz-divider>
 <a [attr.download]="downloadName" [attr.href]="downloadHref"><i nz-icon nzType="download" nzTheme="outline"></i> Download</a>
+<nz-divider nzType="vertical"></nz-divider>
+<a (click)="toggleFullScreen()">
+  <ng-container *ngIf="isFullScreen else exitFullScreenTpl">
+    <i nz-icon nzType="fullscreen-exit" nzTheme="outline"></i> Exit FullScreen
+  </ng-container>
+  <ng-template #exitFullScreenTpl>
+    <i nz-icon nzType="fullscreen" nzTheme="outline"></i> FullScreen
+  </ng-template>
+</a>

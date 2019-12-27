@@ -14,14 +14,18 @@
  *   limitations under the License.
  */
 
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { JobManagerService } from 'services';
+import { MonacoEditorComponent } from 'share/common/monaco-editor/monaco-editor.component';
 
 @Component({
   selector: 'flink-job-manager-log-detail',
   templateUrl: './job-manager-log-detail.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  host: {
+    '[class.full-screen]': 'isFullScreen'
+  },
   styleUrls: ['./job-manager-log-detail.component.less']
 })
 export class JobManagerLogDetailComponent implements OnInit {
@@ -29,7 +33,8 @@ export class JobManagerLogDetailComponent implements OnInit {
   logName = '';
   downloadUrl = '';
   isLoading = false;
-
+  isFullScreen = false;
+  @ViewChild(MonacoEditorComponent) monacoEditorComponent: MonacoEditorComponent;
   constructor(
     private jobManagerService: JobManagerService,
     private cdr: ChangeDetectorRef,
@@ -52,6 +57,11 @@ export class JobManagerLogDetailComponent implements OnInit {
       }
     );
   }
+  toggleFullScreen(fullScreen: boolean) {
+    this.isFullScreen = fullScreen;
+    setTimeout(() => this.monacoEditorComponent.layout());
+  }
+
   ngOnInit() {
     this.logName = this.activatedRoute.snapshot.params.logName;
     this.reload();
