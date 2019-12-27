@@ -17,94 +17,59 @@
   -->
 
 <ng-container *ngIf="jobManagerMetric">
-  <nz-card nzTitle="Memory" [nzBordered]="false">
-    <nz-card nzType="inner" nzTitle="JVM (Heap/Non-Heap)">
-      <nz-table
-        [nzTemplateMode]="true"
-        [nzShowPagination]="false"
-        [nzSize]="'small'"
-        class="no-border">
-        <thead>
-          <tr>
-            <th>Type</th>
-            <th>Committed</th>
-            <th>Used</th>
-            <th>Maximum</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td><strong>Heap</strong></td>
-            <td>{{ jobManagerMetric.heapCommitted | humanizeBytes }}</td>
-            <td>{{ jobManagerMetric.heapUsed | humanizeBytes }}</td>
-            <td>{{ jobManagerMetric.heapMax | humanizeBytes }}</td>
-          </tr>
-          <tr>
-            <td><strong>Non-Heap</strong></td>
-            <td>{{ jobManagerMetric.nonHeapCommitted | humanizeBytes }}</td>
-            <td>{{ jobManagerMetric.nonHeapUsed | humanizeBytes }}</td>
-            <td>{{ jobManagerMetric.nonHeapMax | humanizeBytes }}</td>
-          </tr>
-          <tr>
-            <td><strong>Total</strong></td>
-            <td>{{ (jobManagerMetric.heapCommitted + jobManagerMetric.nonHeapCommitted) | humanizeBytes }}</td>
-            <td>{{ (jobManagerMetric.heapUsed + jobManagerMetric.nonHeapUsed) | humanizeBytes }}</td>
-            <td>{{ (jobManagerMetric.heapMax + jobManagerMetric.nonHeapMax) | humanizeBytes }}</td>
-          </tr>
-        </tbody>
-      </nz-table>
-    </nz-card>
-    <nz-card nzType="inner" nzTitle="Outside JVM">
-      <nz-table
-        [nzTemplateMode]="true"
-        [nzShowPagination]="false"
-        [nzSize]="'small'"
-        class="no-border">
-        <thead>
-          <tr>
-            <th>Type</th>
-            <th>Count</th>
-            <th>Used</th>
-            <th>Maximum</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td><strong>Direct</strong></td>
-            <td>{{ jobManagerMetric.directCount | number }}</td>
-            <td>{{ jobManagerMetric.directUsed | humanizeBytes }}</td>
-            <td>{{ jobManagerMetric.directMax | humanizeBytes }}</td>
-          </tr>
-          <tr>
-            <td><strong>Mapped</strong></td>
-            <td>{{ jobManagerMetric.mappedCount | number }}</td>
-            <td>{{ jobManagerMetric.mappedUsed | humanizeBytes }}</td>
-            <td>{{ jobManagerMetric.mappedMax | humanizeBytes }}</td>
-          </tr>
-        </tbody>
-      </nz-table>
-    </nz-card>
-    <nz-card nzType="inner" nzTitle="Garbage Collection">
-      <nz-table
-        [nzTemplateMode]="true"
-        [nzShowPagination]="false"
-        [nzSize]="'small'"
-        class="no-border">
-        <thead>
-          <tr>
-            <th>Collector</th>
-            <th>Count</th>
-            <th>Time</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let g of jobManagerMetric.garbageCollectors">
-            <td><strong>{{ g.name }}</strong></td>
-            <td>{{ g.count | number }}</td>
-            <td>{{ g.time | number }}</td>
-          </tr>
-        </tbody>
-      </nz-table>
-    </nz-card>
+  <nz-card nzTitle="JVM Memory">
+    <div class="info-container">
+      <flink-progress-state header="Heap"
+        [used]="jobManagerMetric.heapUsed"
+        [max]="jobManagerMetric.heapMax"
+        [committed]="jobManagerMetric.heapCommitted">
+      </flink-progress-state>
+      <flink-progress-state header="Non-Heap"
+        [used]="jobManagerMetric.nonHeapUsed"
+        [max]="jobManagerMetric.nonHeapMax"
+        [committed]="jobManagerMetric.nonHeapCommitted">
+      </flink-progress-state>
+      <flink-progress-state header="Total"
+        [used]="jobManagerMetric.heapCommitted + jobManagerMetric.nonHeapCommitted"
+        [max]="jobManagerMetric.heapMax + jobManagerMetric.nonHeapMax"
+        [committed]="jobManagerMetric.heapCommitted + jobManagerMetric.nonHeapCommitted">
+      </flink-progress-state>
+    </div>
+  </nz-card>
+  <nz-card nzTitle="Outside JVM Memory">
+    <div class="info-container">
+      <flink-progress-state header="Directed"
+        [used]="jobManagerMetric.directUsed"
+        [max]="jobManagerMetric.directMax"
+        [count]="jobManagerMetric.directCount">
+      </flink-progress-state>
+      <flink-progress-state header="Mapped"
+        [used]="jobManagerMetric.mappedUsed"
+        [max]="jobManagerMetric.mappedMax"
+        [count]="jobManagerMetric.mappedCount">
+      </flink-progress-state>
+    </div>
+  </nz-card>
+  <nz-card nzTitle="Garbage Collection">
+    <nz-table
+      [nzTemplateMode]="true"
+      [nzShowPagination]="false"
+      [nzSize]="'small'"
+      class="no-border gc-table">
+      <thead>
+        <tr>
+          <th>Collector</th>
+          <th>Count</th>
+          <th>Time</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let g of jobManagerMetric.garbageCollectors;trackBy:trackByName;">
+          <td><span class="gc-name">{{ g.name }}</span></td>
+          <td>{{ g.count | number }}</td>
+          <td>{{ g.time | number }}</td>
+        </tr>
+      </tbody>
+    </nz-table>
   </nz-card>
 </ng-container>

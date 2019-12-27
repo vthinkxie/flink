@@ -17,7 +17,7 @@
  */
 
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { JobManagerMetricInterface } from 'interfaces';
+import { GarbageCollectorsItem, JobManagerMetricInterface } from 'interfaces';
 import { JobManagerService } from 'services';
 
 @Component({
@@ -28,6 +28,10 @@ import { JobManagerService } from 'services';
 })
 export class JobManagerMetricsComponent implements OnInit {
   jobManagerMetric: JobManagerMetricInterface;
+
+  trackByName(_: number, node: GarbageCollectorsItem) {
+    return node.name;
+  }
 
   constructor(private jobManagerService: JobManagerService, private cdr: ChangeDetectorRef) {}
 
