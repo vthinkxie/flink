@@ -32,7 +32,8 @@ export class TaskManagerStatusComponent implements OnInit, OnDestroy {
   @Input() isLoading = true;
   listOfNavigation = [{ path: 'metrics', title: 'Metrics' }, { path: 'log', title: 'Log' }];
   taskManagerDetail: TaskManagerDetailInterface;
-  slotPercent = 0;
+  usedSlotPercent = 0;
+  usedSlotText = '- / -';
   private destroy$ = new Subject();
 
   constructor(private taskManagerService: TaskManagerService, private cdr: ChangeDetectorRef) {}
@@ -40,7 +41,9 @@ export class TaskManagerStatusComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.taskManagerService.taskManagerDetail$.pipe(takeUntil(this.destroy$)).subscribe(data => {
       this.taskManagerDetail = data;
-      this.slotPercent = +((this.taskManagerDetail.freeSlots / this.taskManagerDetail.slotsNumber) * 100).toFixed(2);
+      const usedSlot = this.taskManagerDetail.slotsNumber - this.taskManagerDetail.freeSlots;
+      this.usedSlotPercent = (usedSlot / this.taskManagerDetail.slotsNumber) * 100;
+      this.usedSlotText = `${usedSlot} / ${this.taskManagerDetail.slotsNumber}`;
       this.cdr.markForCheck();
     });
   }
