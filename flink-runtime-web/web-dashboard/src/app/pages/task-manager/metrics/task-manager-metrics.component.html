@@ -44,6 +44,7 @@
               <nz-card nzType="inner" class="card-inner" nzTitle="Framework Heap">
                 <nz-card nzType="inner" class="card-inner" nzTitle="Configuration">
                   {{ taskManagerDetail.resource.frameworkHeap | humanizeBytes }}
+                  <i class="help" nz-tooltip nzTitle="Configuration: taskmanager.memory.framework.heap.size" nz-icon nzType="question-circle" nzTheme="fill"></i>
                 </nz-card>
               </nz-card>
             </div>
@@ -51,6 +52,7 @@
               <nz-card nzType="inner" class="card-inner" nzTitle="Task Heap">
                 <nz-card nzType="inner" class="card-inner" nzTitle="Configuration">
                   {{ taskManagerDetail.resource.taskHeap | humanizeBytes }}
+                  <i class="help" nz-tooltip nzTitle="Configuration: taskmanager.memory.task.heap.size" nz-icon nzType="question-circle" nzTheme="fill"></i>
                 </nz-card>
               </nz-card>
             </div>
@@ -64,6 +66,7 @@
               <nz-card nzType="inner" nzTitle="JVM MetaSpace">
                 <nz-card nzType="inner" class="card-inner" nzTitle="Configuration">
                   {{ taskManagerDetail.resource.jvmMetaSpace | humanizeBytes }}
+                  <i class="help" nz-tooltip nzTitle="Configuration: taskmanager.memory.jvm-metaspace.size" nz-icon nzType="question-circle" nzTheme="fill"></i>
                 </nz-card>
               </nz-card>
             </div>
@@ -71,6 +74,7 @@
               <nz-card nzType="inner" nzTitle="JVM Overhead">
                 <nz-card nzType="inner" class="card-inner" nzTitle="Configuration">
                   {{ taskManagerDetail.resource.jvmOverhead | humanizeBytes }}
+                  <i class="help" nz-tooltip nzTitle="Configuration: taskmanager.memory.jvm-overhead.min ~ taskmanager.memory.jvm-overhead.max" nz-icon nzType="question-circle" nzTheme="fill"></i>
                 </nz-card>
               </nz-card>
             </div>
@@ -112,6 +116,7 @@
               <nz-card nzType="inner" class="card-inner" nzTitle="Framework OffHeap">
                 <nz-card nzType="inner" class="card-inner" nzTitle="Configuration">
                   {{ taskManagerDetail.resource.frameworkOffHeap | humanizeBytes }}
+                  <i class="help" nz-tooltip nzTitle="Configuration: taskmanager.memory.framework.off-heap.size" nz-icon nzType="question-circle" nzTheme="fill"></i>
                 </nz-card>
               </nz-card>
             </div>
@@ -119,6 +124,7 @@
               <nz-card nzType="inner" class="card-inner" nzTitle="Task OffHeap">
                 <nz-card nzType="inner" class="card-inner" nzTitle="Configuration">
                   {{ taskManagerDetail.resource.taskOffHeap | humanizeBytes }}
+                  <i class="help" nz-tooltip nzTitle="Configuration: taskmanager.memory.task.off-heap.size" nz-icon nzType="question-circle" nzTheme="fill"></i>
                 </nz-card>
               </nz-card>
             </div>
@@ -128,6 +134,7 @@
                     <div nz-col nzSpan="6">
                       <nz-card nzType="inner" class="card-inner" nzTitle="Configuration">
                         {{ taskManagerDetail.resource.shuffleMemory | humanizeBytes }}
+                        <i class="help" nz-tooltip nzTitle="Configuration: taskmanager.memory.shuffle.min ~ taskmanager.memory.shuffle.max" nz-icon nzType="question-circle" nzTheme="fill"></i>
                       </nz-card>
                     </div>
                     <div nz-col nzSpan="9">
@@ -161,6 +168,7 @@
           <nz-card nzType="inner" class="card-inner" nzTitle="Managed">
             <nz-card nzType="inner" class="card-inner" nzTitle="Configuration">
               {{ taskManagerDetail.resource.managedMemory | humanizeBytes }}
+              <i class="help" nz-tooltip nzTitle="Configuration: taskmanager.memory.managed.size" nz-icon nzType="question-circle" nzTheme="fill"></i>
             </nz-card>
           </nz-card>
         </nz-card>
