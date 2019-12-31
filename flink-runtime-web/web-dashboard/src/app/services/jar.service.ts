@@ -126,6 +126,7 @@ export class JarService {
           nodes = data.plan.nodes.map(node => {
             return {
               ...node,
+              tips: null,
               detail: undefined
             };
           });
