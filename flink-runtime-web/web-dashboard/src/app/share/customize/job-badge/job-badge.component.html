@@ -17,5 +17,9 @@
   -->
 
 <div class="background">
-  <span [style.background]="backgroundColor(state)">{{ state }}</span>
+  <span [style.background]="backgroundColor(state)">
+    {{ state }}
+    <i *ngIf="tips" nz-tooltip [nzTitle]="tips" nz-icon nzType="question-circle" nzTheme="fill"></i>
+  </span>
 </div>
+

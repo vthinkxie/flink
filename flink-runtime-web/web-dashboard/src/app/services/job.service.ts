@@ -267,11 +267,20 @@ export class JobService {
     if (job.plan.nodes.length) {
       nodes = job.plan.nodes.map(node => {
         let detail;
+        let tips = null;
         if (job.vertices && job.vertices.length) {
           detail = job.vertices.find(vertex => vertex.id === node.id);
+          // display tips when still created after 30s
+          const timeExceeded = new Date().getTime() - job['start-time'] > 30000;
+          if (detail && detail.status === 'CREATED' && timeExceeded) {
+            tips = 'Check pending slots for more details';
+          } else {
+            tips = null;
+          }
         }
         return {
           ...node,
+          tips,
           detail
         };
       });

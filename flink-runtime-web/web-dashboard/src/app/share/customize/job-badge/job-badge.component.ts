@@ -27,6 +27,7 @@ import { COLOR_MAP } from 'config';
 })
 export class JobBadgeComponent {
   @Input() state: string;
+  @Input() tips = null;
 
   backgroundColor(state: string) {
     // @ts-ignore

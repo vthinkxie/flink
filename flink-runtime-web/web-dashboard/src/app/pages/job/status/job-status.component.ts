@@ -61,10 +61,10 @@ export class JobStatusComponent implements OnInit, OnDestroy {
   ];
 
   cancelJob() {
-    this.jobService.cancelJob(this.jobDetail.jid).subscribe(() => {
-      this.statusTips = 'Cancelling...';
-      this.cdr.markForCheck();
-    });
+    // this.jobService.cancelJob(this.jobDetail.jid).subscribe(() => {
+    //   this.statusTips = 'Cancelling...';
+    //   this.cdr.markForCheck();
+    // });
   }
 
   constructor(private jobService: JobService, private cdr: ChangeDetectorRef) {}

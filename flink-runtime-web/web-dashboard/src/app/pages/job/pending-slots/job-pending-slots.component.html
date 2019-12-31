@@ -25,28 +25,20 @@
   <thead>
     <tr>
       <th nzShowExpand></th>
+      <th>ID</th>
       <th>Start Time</th>
-      <th>Shuffle MEM</th>
-      <th>Heap MEM</th>
-      <th>OffHeap MEM</th>
-      <th>Managed MEM</th>
-      <th>CPU Cores</th>
     </tr>
   </thead>
   <tbody>
     <ng-container *ngFor="let data of listOfPendingSlots; trackBy: trackByPendingSlots">
       <tr>
         <td nzShowExpand [(nzExpand)]="data.expand"></td>
+        <td>{{data.id}}</td>
         <td>{{data.start_time | humanizeDate: 'yyyy-MM-dd HH:mm:ss'}}</td>
-        <td>{{data.resource_profile.shuffle_memory | humanizeBytes }}</td>
-        <td>{{data.resource_profile.heap_memory  | humanizeBytes }}</td>
-        <td>{{data.resource_profile.offHeap_memory | humanizeBytes }}</td>
-        <td>{{data.resource_profile.managed_memory | humanizeBytes }}</td>
-        <td>{{data.resource_profile.cpu_cores | number:'1.0-2' | humanizeCheckNegative }}</td>
       </tr>
       <tr [nzExpand]="data.expand">
         <td></td>
-        <td colspan="6">
+        <td colspan="2">
           <nz-table
             [nzSize]="'small'"
             class="no-border small"
@@ -62,7 +54,7 @@
             <tbody>
               <tr *ngFor="let task of data.tasks">
                 <td>
-                  <a [title]="task.task_name" class="name" [routerLink]="['../','overview',task.vertex_id,'detail']">{{task.task_name}}</a>
+                  <a [title]="task.task_name" class="name" [routerLink]="['../','overview',task.vertex_id,'detail']" target="_blank">{{task.task_name}}</a>
                 </td>
                 <td>{{task.vertex_id}}</td>
               </tr>

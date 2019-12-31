@@ -17,8 +17,10 @@
   -->
 
 <nz-tabset [nzTabBarGutter]="4" [nzSize]="'small'" [nzAnimated]="{inkBar:true, tabPane:false}">
-  <nz-tab nzTitle="Root Exception" nzForceRender>
-    <flink-monaco-editor [value]="rootException"></flink-monaco-editor>
+  <nz-tab nzTitle="Root Exception">
+    <ng-template nz-tab>
+      <flink-monaco-editor [value]="rootException"></flink-monaco-editor>
+    </ng-template>
   </nz-tab>
   <nz-tab nzTitle="Exception History" nzForceRender>
     <nz-table

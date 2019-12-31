@@ -48,7 +48,7 @@
         <a nzPlacement="topLeft" nz-tooltip [nzTitle]="node.detail?.name">{{ node.detail?.name }}</a>
       </td>
       <td>
-        <flink-job-badge [state]="node.detail?.status"></flink-job-badge>
+        <flink-job-badge [state]="node.detail?.status" [tips]="node.tips"></flink-job-badge>
       </td>
       <td>
         <span *ngIf="node.detail?.metrics['read-bytes-complete'];else loadingTemplate">
