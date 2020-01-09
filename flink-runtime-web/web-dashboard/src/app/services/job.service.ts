@@ -309,8 +309,6 @@ export class JobService {
    * @param jobId
    */
   loadPendingSlots(jobId: string) {
-    return this.httpClient
-      .get<JobPendingSlots>(`${BASE_URL}/jobs/${jobId}/pendingslotrequest`)
-      .pipe(map(item => item['pending-slot-requests']));
+    return this.httpClient.get<JobPendingSlots>(`${BASE_URL}/jobs/${jobId}/pendingslotrequest`);
   }
 }

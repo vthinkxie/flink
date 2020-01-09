@@ -29,7 +29,12 @@ import { Chart } from '@antv/g2';
 import * as G2 from '@antv/g2';
 import { Subject } from 'rxjs';
 import { distinctUntilChanged, filter, takeUntil } from 'rxjs/operators';
-import { JobDetailCorrectInterface, JobSubTaskTimeAttemptInterface, VerticesItemRangeInterface } from 'interfaces';
+import {
+  JobDetailCorrectInterface,
+  JobSubTaskTimeAttemptInterface,
+  VerticesItemInterface,
+  VerticesItemRangeInterface
+} from 'interfaces';
 import { JobService } from 'services';
 import { COLOR_MAP } from 'config';
 
@@ -44,70 +49,80 @@ export class JobTimelineComponent implements AfterViewInit, OnDestroy {
   mainChartInstance: Chart;
   subTaskChartInstance: Chart;
   jobDetail: JobDetailCorrectInterface;
-  selectedName: string;
+  selectedSubTask: VerticesItemInterface;
   isShowSubTaskTimeLine = false;
+  showAttempt = false;
   @ViewChild('mainTimeLine') mainTimeLine: ElementRef;
   @ViewChild('subTaskTimeLine') subTaskTimeLine: ElementRef;
+  timeConfig = {
+    range: {
+      alias: 'Time',
+      type: 'time',
+      mask: 'MM-DD HH:mm:ss',
+      nice: false
+    }
+  };
 
-  updateSubTaskChart(vertexId: string) {
+  heightCalc(count: number): number {
+    return Math.max(count * 50 + 100, 150);
+  }
+  toggleAttemptTimeline(showAttempt: boolean) {
+    this.showAttempt = showAttempt;
+    this.updateSubTaskChart(this.selectedSubTask.id, this.showAttempt);
+  }
+
+  updateSubTaskChart(vertexId: string, showAttempt = false) {
     const listOfSubTaskTimeLine: Array<{ name: string; status: string; range: [number, number] }> = [];
     let timeLineCount = 0;
     this.jobService.loadSubTaskTimes(this.jobDetail.jid, vertexId).subscribe(data => {
-      data.subtasks.forEach(subtask => {
-        subtask['attempts-time-info'].forEach((attempt: JobSubTaskTimeAttemptInterface) => {
-          timeLineCount = timeLineCount + 1;
-          const listOfTimeLine: Array<{ status: string; startTime: number }> = [];
-          for (const key in attempt.timestamps) {
-            // @ts-ignore
-            const time = attempt.timestamps[key];
-            if (time > 0) {
-              listOfTimeLine.push({
-                status: key,
-                startTime: time
-              });
-            }
+      const countTimeline = (attempt: JobSubTaskTimeAttemptInterface) => {
+        timeLineCount = timeLineCount + 1;
+        const listOfTimeLine: Array<{ status: string; startTime: number }> = [];
+        for (const key in attempt.timestamps) {
+          // @ts-ignore
+          const time = attempt.timestamps[key];
+          if (time > 0) {
+            listOfTimeLine.push({
+              status: key,
+              startTime: time
+            });
           }
-          listOfTimeLine.sort((pre, next) => pre.startTime - next.startTime);
-          listOfTimeLine.forEach((item, index) => {
-            const name = `Subtask-${attempt.subtask} | Host-${attempt.host} | Attempt-${attempt['attempt-num']}`;
-            const status = item.status;
-            if (index === listOfTimeLine.length - 1) {
-              let endTime = attempt.duration + listOfTimeLine[0].startTime;
-              if (endTime < item.startTime) {
-                endTime = item.startTime;
-              }
-              listOfSubTaskTimeLine.push({
-                name,
-                status,
-                range: [item.startTime, endTime]
-              });
-            } else {
-              listOfSubTaskTimeLine.push({
-                name,
-                status,
-                range: [item.startTime, listOfTimeLine[index + 1].startTime]
-              });
+        }
+        listOfTimeLine.sort((pre, next) => pre.startTime - next.startTime);
+        listOfTimeLine.forEach((item, index) => {
+          const name = `Subtask-${attempt.subtask} | Host-${attempt.host} | Attempt-${attempt['attempt-num']}`;
+          const status = item.status;
+          if (index === listOfTimeLine.length - 1) {
+            let endTime = attempt.duration + listOfTimeLine[0].startTime;
+            if (endTime < item.startTime) {
+              endTime = item.startTime;
             }
-          });
+            listOfSubTaskTimeLine.push({
+              name,
+              status,
+              range: [item.startTime, endTime]
+            });
+          } else {
+            listOfSubTaskTimeLine.push({
+              name,
+              status,
+              range: [item.startTime, listOfTimeLine[index + 1].startTime]
+            });
+          }
         });
-      });
-      this.subTaskChartInstance.changeHeight(Math.max(timeLineCount * 50 + 100, 150));
-      this.subTaskChartInstance.source(listOfSubTaskTimeLine, {
-        range: {
-          alias: 'Time',
-          type: 'time',
-          mask: 'HH:mm:ss:SSS',
-          nice: false
+      };
+      data.subtasks.forEach(subtask => {
+        if (showAttempt) {
+          subtask['attempts-time-info'].forEach((attempt: JobSubTaskTimeAttemptInterface) => countTimeline(attempt));
+        } else {
+          countTimeline(subtask);
         }
       });
+      this.subTaskChartInstance.changeHeight(this.heightCalc(timeLineCount));
+      this.subTaskChartInstance.source(listOfSubTaskTimeLine, this.timeConfig);
       this.subTaskChartInstance.render();
       this.isShowSubTaskTimeLine = true;
       this.cdr.markForCheck();
-      setTimeout(() => {
-        try {
-          (document.getElementById('subtask') as any).scrollIntoViewIfNeeded();
-        } catch (e) {}
-      });
     });
   }
 
@@ -149,9 +164,9 @@ export class JobTimelineComponent implements AfterViewInit, OnDestroy {
     });
     this.mainChartInstance.on('click', (e: any) => {
       if (this.mainChartInstance.getSnapRecords(e).length) {
-        const data = (this.mainChartInstance.getSnapRecords(e)[0] as any)._origin;
-        this.selectedName = data.name;
-        this.updateSubTaskChart(data.id);
+        const data = (this.mainChartInstance.getSnapRecords(e)[0] as any)._origin as VerticesItemInterface;
+        this.selectedSubTask = data;
+        this.updateSubTaskChart(this.selectedSubTask.id, this.showAttempt);
       }
     });
   }
@@ -199,15 +214,8 @@ export class JobTimelineComponent implements AfterViewInit, OnDestroy {
             };
           });
         listOfVertex.sort((a, b) => a.range[0] - b.range[0]);
-        this.mainChartInstance.changeHeight(Math.max(listOfVertex.length * 50 + 100, 150));
-        this.mainChartInstance.source(listOfVertex, {
-          range: {
-            alias: 'Time',
-            type: 'time',
-            mask: 'HH:mm:ss:SSS',
-            nice: false
-          }
-        });
+        this.mainChartInstance.changeHeight(this.heightCalc(listOfVertex.length));
+        this.mainChartInstance.source(listOfVertex, this.timeConfig);
         this.mainChartInstance.render();
         this.cdr.markForCheck();
       });

@@ -16,7 +16,7 @@
  * limitations under the License.
  */
 .name {
-  width: 500px;
+  max-width: 500px;
   overflow: hidden;
   display: inline-block;
   text-overflow: ellipsis;
@@ -24,6 +24,14 @@
   vertical-align: bottom;
 }
 
-:host {
-  padding: 12px;
+nz-table {
+  margin: 12px;
+}
+nz-alert {
+  ::ng-deep {
+    .ant-alert {
+      border-radius: 0;
+      border-width: 0 0 1px 0;
+    }
+  }
 }

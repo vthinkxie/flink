@@ -18,19 +18,25 @@
 
 export interface JobPendingSlots {
   'pending-slot-requests': JobPendingSlot[];
+  total: number;
 }
 
 export interface JobPendingSlot {
+  vertex_id: string;
+  task_name: string;
+  slots: Slot[];
+}
+
+interface Slot {
   id: string;
   resource_profile: {
-    shuffle_memory: number;
+    cpu_cores: number;
     heap_memory: number;
     offHeap_memory: number;
     managed_memory: number;
-    cpu_cores: number;
+    shuffle_memory: number;
   };
   start_time: number;
   sharing_id: string;
   'co-location_id': string;
-  tasks: { task_name: string; vertex_id: string }[];
 }

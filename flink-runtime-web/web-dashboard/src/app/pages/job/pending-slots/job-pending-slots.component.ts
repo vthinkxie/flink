@@ -29,8 +29,9 @@ import { JobService } from 'services';
 })
 export class JobPendingSlotsComponent implements OnInit {
   listOfPendingSlots: JobPendingSlot[] = [];
+  total = 0;
   trackByPendingSlots(_: number, node: JobPendingSlot) {
-    return node.id;
+    return node.vertex_id;
   }
   constructor(private jobService: JobService, private cdr: ChangeDetectorRef) {}
 
@@ -42,11 +43,13 @@ export class JobPendingSlotsComponent implements OnInit {
       )
       .subscribe(
         data => {
-          this.listOfPendingSlots = data;
+          this.listOfPendingSlots = data['pending-slot-requests'];
+          this.total = data.total;
           this.cdr.markForCheck();
         },
         () => {
           this.listOfPendingSlots = [];
+          this.total = 0;
           this.cdr.markForCheck();
         }
       );

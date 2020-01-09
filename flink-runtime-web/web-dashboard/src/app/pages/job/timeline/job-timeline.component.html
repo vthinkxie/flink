@@ -19,5 +19,9 @@
 <nz-divider nzText="Vertex TimeLine"></nz-divider>
 <div #mainTimeLine></div>
 <nz-divider *ngIf="isShowSubTaskTimeLine" nzText="SubTask TimeLine"></nz-divider>
-<div class="name" [hidden]="!isShowSubTaskTimeLine">{{ selectedName }}</div>
+
+<div class="name" [hidden]="!isShowSubTaskTimeLine">
+  {{ selectedSubTask?.name }}
+  <label class="checkbox" nz-checkbox [ngModel]="showAttempt" (ngModelChange)="toggleAttemptTimeline($event)">Show Attempt Timeline</label>
+</div>
 <div #subTaskTimeLine id="subtask"></div>
