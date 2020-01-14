@@ -30,7 +30,7 @@
         [committed]="taskManagerDetail.metrics.nonHeapCommitted">
       </flink-progress-state>
       <flink-progress-state header="Total"
-        [used]="taskManagerDetail.metrics.heapCommitted + taskManagerDetail.metrics.nonHeapCommitted"
+        [used]="taskManagerDetail.metrics.heapUsed + taskManagerDetail.metrics.nonHeapUsed"
         [max]="taskManagerDetail.metrics.heapMax + taskManagerDetail.metrics.nonHeapMax"
         [committed]="taskManagerDetail.metrics.heapCommitted + taskManagerDetail.metrics.nonHeapCommitted">
       </flink-progress-state>
