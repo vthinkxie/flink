@@ -17,7 +17,7 @@
   -->
 <nz-alert [nzMessage]="messageTpl" nzShowIcon *ngIf="total"></nz-alert>
 <ng-template #messageTpl>
-  Total Pending Slots: <strong>{{total}}</strong>
+  JobManager is waiting for <strong>{{total}}</strong> more slots
 </ng-template>
 <nz-table
   class="no-border small"

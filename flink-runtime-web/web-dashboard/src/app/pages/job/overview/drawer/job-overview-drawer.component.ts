@@ -53,7 +53,7 @@ export class JobOverviewDrawerComponent implements OnInit, OnDestroy {
     { title: 'TaskManagers', path: 'taskmanagers' },
     { title: 'Watermarks', path: 'watermarks' },
     { title: 'Accumulators', path: 'accumulators' },
-    { title: 'BackPressure', path: 'backpressure' },
+    { title: 'Backpressure', path: 'backpressure' },
     { title: 'Metrics', path: 'metrics' }
   ];
   fullScreen = false;
