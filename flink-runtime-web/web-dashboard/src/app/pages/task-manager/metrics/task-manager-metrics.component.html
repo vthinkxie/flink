@@ -62,7 +62,7 @@
       <div nz-col nzSpan="14">
         <nz-card nzType="inner" class="card-inner" nzTitle="Non-Heap">
           <div nz-row nzGutter="12">
-            <div nz-col nzSpan="8">
+            <div nz-col nzSpan="10">
               <nz-card nzType="inner" nzTitle="JVM MetaSpace">
                 <nz-card nzType="inner" class="card-inner" nzTitle="Configuration">
                   {{ taskManagerDetail.resource.jvmMetaSpace | humanizeBytes }}
@@ -70,19 +70,21 @@
                 </nz-card>
               </nz-card>
             </div>
-            <div nz-col nzSpan="8">
+            <div nz-col nzSpan="14">
               <nz-card nzType="inner" nzTitle="JVM Overhead">
-                <nz-card nzType="inner" class="card-inner" nzTitle="Configuration">
-                  {{ taskManagerDetail.resource.jvmOverhead | humanizeBytes }}
-                  <i class="help" nz-tooltip nzTitle="Configuration: taskmanager.memory.jvm-overhead.min ~ taskmanager.memory.jvm-overhead.max" nz-icon nzType="question-circle" nzTheme="fill"></i>
-                </nz-card>
-              </nz-card>
-            </div>
-            <div nz-col nzSpan="8">
-              <nz-card nzType="inner" nzTitle="Other">
-                <nz-card nzType="inner" class="card-inner" nzTitle="Configuration">
-                 -
-                </nz-card>
+                <div nz-row nzGutter="12">
+                  <div nz-col nzSpan="12">
+                    <nz-card nzType="inner" class="card-inner" nzTitle="Configuration">
+                      {{ taskManagerDetail.resource.jvmOverhead | humanizeBytes }}
+                      <i class="help" nz-tooltip nzTitle="Configuration: taskmanager.memory.jvm-overhead.min ~ taskmanager.memory.jvm-overhead.max" nz-icon nzType="question-circle" nzTheme="fill"></i>
+                    </nz-card>
+                  </div>
+                  <div nz-col nzSpan="12">
+                    <nz-card nzType="inner" class="card-inner" nzTitle="JVM limit">
+                      {{ (taskManagerDetail.metrics.nonHeapMax - taskManagerDetail.resource.jvmMetaSpace) | humanizeBytes }}
+                    </nz-card>
+                  </div>
+                </div>
               </nz-card>
             </div>
           </div>
@@ -92,7 +94,7 @@
   </nz-card>
   <nz-card nzTitle="Outside JVM Memory">
     <div class="info-container">
-      <flink-progress-state header="Directed"
+      <flink-progress-state header="Direct"
         [used]="taskManagerDetail.metrics.directUsed"
         [config]="taskManagerDetail.resource.frameworkOffHeap + taskManagerDetail.resource.taskOffHeap + taskManagerDetail.resource.networkMemory"
         [count]="taskManagerDetail.metrics.directCount">
