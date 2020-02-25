@@ -47,6 +47,7 @@ export class JobOverviewComponent implements OnInit, OnDestroy {
   top = 500;
   jobId: string;
   timeoutId: number;
+  totalPendingSlots$ = this.jobService.totalPendingSlots$;
 
   onNodeClick(node: NodesItemCorrectInterface) {
     if (!(this.selectedNode && this.selectedNode.id === node.id)) {
@@ -103,11 +104,10 @@ export class JobOverviewComponent implements OnInit, OnDestroy {
           this.links = data.plan.links;
           this.jobId = data.plan.jid;
           this.dagreComponent.flush(this.nodes, this.links, true).then();
-          this.refreshNodesWithWatermarks();
         } else {
           this.nodes = data.plan.nodes;
-          this.refreshNodesWithWatermarks();
         }
+        this.refreshNodesWithWatermarks();
         this.cdr.markForCheck();
       });
 

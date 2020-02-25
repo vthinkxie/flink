@@ -16,9 +16,17 @@
   ~ limitations under the License.
   -->
 
+<ng-container *ngIf="totalPendingSlots$| async as totalSlots">
+  <nz-alert [nzMessage]="messageTpl" nzShowIcon nzType="warning"></nz-alert>
+  <ng-template #messageTpl>
+    <strong>{{totalSlots}}</strong> more slots is needed to run this job
+  </ng-template>
+</ng-container>
+
 <div class="container" [style.height.px]="top">
   <flink-dagre (nodeClick)="onNodeClick($event)" [xCenter]="4"></flink-dagre>
   <router-outlet></router-outlet>
 </div>
+
 <flink-job-overview-list (nodeClick)="onNodeClick($event)" [nodes]="nodes" [selectedNode]="selectedNode"></flink-job-overview-list>
 <flink-resize [(top)]="top" [mode]="'horizontal'" [baseElement]="elementRef" [resizeMin]="280" (resizeEnd)="onResizeEnd()"></flink-resize>

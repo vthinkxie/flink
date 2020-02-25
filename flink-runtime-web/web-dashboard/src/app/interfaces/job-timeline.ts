@@ -32,6 +32,7 @@ export interface JobSubTaskTimeAttemptInterface {
   host: string;
   duration: number;
   'attempt-num': number;
+  'taskmanager-id': string;
   timestamps: {
     CREATED: number;
     RUNNING: number;

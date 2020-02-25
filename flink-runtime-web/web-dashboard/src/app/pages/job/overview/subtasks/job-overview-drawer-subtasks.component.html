@@ -91,7 +91,7 @@
       </td>
       <td>
         <ng-container *ngIf="task?.metrics['is-backpressed-complete'];else loadingTemplate">
-          <flink-backpressure-status [isBackpressed]="task?.metrics['is-backpressed']"></flink-backpressure-status>
+          <flink-backpressure-status [isBackpressured]="task?.metrics['is-backpressed']"></flink-backpressure-status>
         </ng-container>
       </td>
       <td nzRight="50px">

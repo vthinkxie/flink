@@ -36,8 +36,12 @@
     text-align: left;
     word-break: break-all;
     border: 1px solid @primary-color;
-    &.backpressed {
-      background: lighten(@warning-color, 30%);
+    &.backpressured {
+      background: @alert-warning-bg-color;
+      border: 1px solid @warning-color;
+    }
+    &.pending {
+      background: @alert-warning-bg-color;
       border: 1px solid @warning-color;
     }
 
@@ -55,7 +59,11 @@
         margin-top: 24px;
       }
 
-      &.backpressed {
+      &.backpressured {
+        color: @gold-7;
+      }
+
+      &.pending {
         color: @gold-7;
       }
 

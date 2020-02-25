@@ -55,8 +55,8 @@ export class TaskManagerService {
    */
   loadLogList(taskManagerId: string) {
     return this.httpClient
-    .get<{ logs: Array<{ name: string; size: number }> }>(`${BASE_URL}/taskmanagers/${taskManagerId}/logs`)
-    .pipe(map(data => data.logs));
+      .get<{ logs: Array<{ name: string; size: number }> }>(`${BASE_URL}/taskmanagers/${taskManagerId}/logs`)
+      .pipe(map(data => data.logs));
   }
 
   /**
@@ -66,14 +66,16 @@ export class TaskManagerService {
    */
   loadLog(taskManagerId: string, logName: string) {
     const url = `${BASE_URL}/taskmanagers/${taskManagerId}/log/${logName}`;
-    return this.httpClient.get(url, { responseType: 'text',      headers: new HttpHeaders().append('Cache-Control', 'no-cache') }).pipe(
-      map(data => {
-        return {
-          data,
-          url
-        };
-      })
-    );
+    return this.httpClient
+      .get(url, { responseType: 'text', headers: new HttpHeaders().append('Cache-Control', 'no-cache') })
+      .pipe(
+        map(data => {
+          return {
+            data,
+            url
+          };
+        })
+      );
   }
 
   /**

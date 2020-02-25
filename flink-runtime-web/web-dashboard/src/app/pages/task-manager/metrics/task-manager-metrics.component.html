@@ -94,7 +94,7 @@
     <div class="info-container">
       <flink-progress-state header="Directed"
         [used]="taskManagerDetail.metrics.directUsed"
-        [config]="taskManagerDetail.resource.frameworkOffHeap + taskManagerDetail.resource.taskOffHeap + taskManagerDetail.resource.shuffleMemory"
+        [config]="taskManagerDetail.resource.frameworkOffHeap + taskManagerDetail.resource.taskOffHeap + taskManagerDetail.resource.networkMemory"
         [count]="taskManagerDetail.metrics.directCount">
       </flink-progress-state>
       <flink-progress-state header="Mapped"
@@ -129,12 +129,12 @@
               </nz-card>
             </div>
             <div nz-col nzSpan="15">
-                <nz-card nzType="inner" nzTitle="Shuffle">
+                <nz-card nzType="inner" nzTitle="Network">
                   <div nz-row nzGutter="12">
                     <div nz-col nzSpan="6">
                       <nz-card nzType="inner" class="card-inner" nzTitle="Configuration">
-                        {{ taskManagerDetail.resource.shuffleMemory | humanizeBytes }}
-                        <i class="help" nz-tooltip nzTitle="Configuration: taskmanager.memory.shuffle.min ~ taskmanager.memory.shuffle.max" nz-icon nzType="question-circle" nzTheme="fill"></i>
+                        {{ taskManagerDetail.resource.networkMemory | humanizeBytes }}
+                        <i class="help" nz-tooltip nzTitle="Configuration: taskmanager.memory.network.min ~ taskmanager.memory.network.max" nz-icon nzType="question-circle" nzTheme="fill"></i>
                       </nz-card>
                     </div>
                     <div nz-col nzSpan="9">
@@ -151,9 +151,9 @@
                       <nz-card nzType="inner" class="card-inner small" nzTitle="Memory">
                         <dl>
                           <dd>Used</dd>
-                          <dt>{{taskManagerDetail.metrics.shuffleMemoryUsed | humanizeBytes}}</dt>
+                          <dt>{{taskManagerDetail.metrics.networkMemoryUsed | humanizeBytes}}</dt>
                           <dd>Total</dd>
-                          <dt>{{taskManagerDetail.metrics.shuffleMemoryTotal | humanizeBytes}}</dt>
+                          <dt>{{taskManagerDetail.metrics.networkMemoryTotal | humanizeBytes}}</dt>
                         </dl>
                       </nz-card>
                     </div>
@@ -192,7 +192,7 @@
         <tr *ngFor="let g of taskManagerDetail.metrics.garbageCollectors;trackBy:trackByName;">
           <td><span class="gc-name">{{ g.name }}</span></td>
           <td>{{ g.count | number }}</td>
-          <td>{{ g.time | number }}</td>
+          <td>{{ g.time | number }} ms</td>
         </tr>
       </tbody>
     </nz-table>

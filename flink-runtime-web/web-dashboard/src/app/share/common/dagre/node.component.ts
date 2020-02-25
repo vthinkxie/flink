@@ -31,7 +31,8 @@ export class NodeComponent {
   operatorStrategy: string | null;
   parallelism: number | null;
   lowWatermark: number | null | undefined;
-  backpressed = false;
+  backpressured = false;
+  pendingSlots = 0;
   height = 0;
   id: string;
 
@@ -48,8 +49,9 @@ export class NodeComponent {
     this.operatorStrategy = this.decodeHTML(value.operator_strategy);
     this.parallelism = value.parallelism;
     this.lowWatermark = value.lowWatermark;
+    this.pendingSlots = value.pendingSlots!;
     if (value.detail && value.detail.metrics) {
-      this.backpressed = value.detail!.metrics['is-backpressed'];
+      this.backpressured = value.detail!.metrics['is-backpressed'];
     }
     this.height = value.height || 0;
     this.id = value.id;

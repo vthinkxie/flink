@@ -25,12 +25,12 @@
       <dl>
         <dd>Status</dd>
           <dt>
-            <flink-job-badge [state]="node.detail.status" [tips]="node.tips"></flink-job-badge>
+            <flink-job-badge [state]="node.detail.status"></flink-job-badge>
           </dt>
         <dd>Back Pressure</dd>
         <dt>
           <span *ngIf="node.detail.metrics['is-backpressed-complete'];else loadingTemplate">
-            <flink-backpressure-status [isBackpressed]="node.detail.metrics['is-backpressed']"></flink-backpressure-status>
+            <flink-backpressure-status [isBackpressured]="node.detail.metrics['is-backpressed']"></flink-backpressure-status>
           </span>
         </dt>
         <dd>Parallelism</dd>

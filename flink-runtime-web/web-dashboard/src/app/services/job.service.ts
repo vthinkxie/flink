@@ -52,6 +52,10 @@ export class JobService {
    */
   jobDetail$ = new ReplaySubject<JobDetailCorrectInterface>(1);
   /**
+   * pending slots number
+   */
+  totalPendingSlots$ = new ReplaySubject<number>(1);
+  /**
    * Current activated vertex
    */
   selectedVertex$ = new ReplaySubject<NodesItemCorrectInterface | null>(1);
@@ -116,6 +120,23 @@ export class JobService {
   loadJob(jobId: string) {
     return this.httpClient.get<JobDetailInterface>(`${BASE_URL}/jobs/${jobId}`).pipe(
       map(job => this.convertJob(job)),
+      flatMap(job => {
+        return this.loadPendingSlots(jobId).pipe(
+          map(slots => {
+            const listOfPendingSlots = slots['pending-slot-requests'];
+            this.totalPendingSlots$.next(slots.total);
+            job.plan.nodes = job.plan.nodes.map(node => {
+              const pendingData = listOfPendingSlots.find(s => s.vertex_id === node.id);
+              if (pendingData) {
+                return { ...node, pendingSlots: pendingData.slots.length };
+              } else {
+                return { ...node, pendingSlots: 0 };
+              }
+            });
+            return job;
+          })
+        );
+      }),
       tap(job => {
         this.jobDetail$.next(job);
       }),
@@ -267,20 +288,11 @@ export class JobService {
     if (job.plan.nodes.length) {
       nodes = job.plan.nodes.map(node => {
         let detail;
-        let tips = null;
         if (job.vertices && job.vertices.length) {
           detail = job.vertices.find(vertex => vertex.id === node.id);
-          // display tips when still created after 30s
-          const timeExceeded = new Date().getTime() - job['start-time'] > 30000;
-          if (detail && detail.status === 'CREATED' && timeExceeded) {
-            tips = 'Check pending slots for more details';
-          } else {
-            tips = null;
-          }
         }
         return {
           ...node,
-          tips,
           detail
         };
       });

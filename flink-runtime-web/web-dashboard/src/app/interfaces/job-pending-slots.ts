@@ -34,7 +34,7 @@ interface Slot {
     heap_memory: number;
     offHeap_memory: number;
     managed_memory: number;
-    shuffle_memory: number;
+    network_memory: number;
   };
   start_time: number;
   sharing_id: string;

@@ -55,7 +55,7 @@ interface Resource {
   frameworkOffHeap: number;
   taskHeap: number;
   taskOffHeap: number;
-  shuffleMemory: number;
+  networkMemory: number;
   managedMemory: number;
   jvmMetaSpace: number;
   jvmOverhead: number;
@@ -80,8 +80,8 @@ interface Metrics {
   cpuUsed: number;
   memorySegmentsAvailable: number;
   memorySegmentsTotal: number;
-  shuffleMemoryUsed: number;
-  shuffleMemoryTotal: number;
+  networkMemoryUsed: number;
+  networkMemoryTotal: number;
   garbageCollectors: GarbageCollectorsItem[];
 }
 

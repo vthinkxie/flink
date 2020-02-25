@@ -138,7 +138,7 @@ export interface NodesItemInterface {
 export interface NodesItemCorrectInterface extends NodesItemInterface {
   detail: VerticesItemInterface | undefined;
   lowWatermark?: number;
-  tips: string | null;
+  pendingSlots?: number;
 }
 
 export interface NodesItemLinkInterface {

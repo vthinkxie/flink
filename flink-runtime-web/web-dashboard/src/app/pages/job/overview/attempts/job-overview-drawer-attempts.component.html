@@ -21,7 +21,7 @@
   [nzSize]="'small'"
   [nzLoading]="isLoading"
   [nzData]="listOfTask"
-  [nzScroll]="{x:'2140px',y:'500px'}"
+  [nzScroll]="{x:'2200px',y:'500px'}"
   [nzFrontPagination]="false"
   [nzShowPagination]="false">
   <thead (nzSortChange)="sort($event)" nzSingleSort>
@@ -39,7 +39,8 @@
       <th nzSortKey="metrics.input-floating-buffers-usage" nzShowSort nzWidth="220px">Input Floating Buffers Usage</th>
       <th nzSortKey="metrics.out-pool-usage" nzShowSort nzWidth="160px">Out Pool Usage</th>
       <th nzSortKey="metrics.is-backpressed" nzShowSort nzWidth="130px">Back Pressure</th>
-      <th nzSortKey="status" nzShowSort nzWidth="120px" nzRight="0px">Status</th>
+      <th nzSortKey="status" nzShowSort nzWidth="120px" nzRight="60px">Status</th>
+      <th nzWidth="60px" nzRight="0px">More</th>
     </tr>
   </thead>
   <tbody>
@@ -88,11 +89,21 @@
       </td>
       <td>
         <ng-container *ngIf="task?.metrics['is-backpressed-complete'];else loadingTemplate">
-          <flink-backpressure-status [isBackpressed]="task?.metrics['is-backpressed']"></flink-backpressure-status>
+          <flink-backpressure-status [isBackpressured]="task?.metrics['is-backpressed']"></flink-backpressure-status>
         </ng-container>
       </td>
-      <td nzRight="0px">
+      <td nzRight="60px">
         <flink-job-badge [state]="task.status"></flink-job-badge>
+      </td>
+      <td nzRight="0px">
+        <nz-dropdown [nzPlacement]="'bottomRight'">
+          <span nz-dropdown><i nz-icon nzType="ellipsis" nzTheme="outline"></i></span>
+          <ul nz-menu>
+            <li nz-menu-item>
+              <a [routerLink]="['/task-manager',task['taskmanager-id'],'log','taskmanager.log']" target="_blank">View taskmanager log</a>
+            </li>
+          </ul>
+        </nz-dropdown>
       </td>
     </tr>
   </tbody>

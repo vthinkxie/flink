@@ -62,7 +62,7 @@
         <tr *ngFor="let g of jobManagerMetric.garbageCollectors;trackBy:trackByName;">
           <td><span class="gc-name">{{ g.name }}</span></td>
           <td>{{ g.count | number }}</td>
-          <td>{{ g.time | number }}</td>
+          <td>{{ g.time | number }} ms</td>
         </tr>
       </tbody>
     </nz-table>

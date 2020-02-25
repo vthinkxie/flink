@@ -18,6 +18,18 @@
 
 @import "theme";
 
+nz-alert{
+  position: absolute;
+  left: -1px;
+  top: -1px;
+  bottom: 0;
+  right: -1px;
+  ::ng-deep{
+    .ant-alert{
+      border-radius: 0;
+    }
+  }
+}
 .container {
   width: 100%;
   overflow: hidden;

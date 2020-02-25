@@ -27,7 +27,6 @@ import { JobConfigurationComponent } from './configuration/job-configuration.com
 import { JobExceptionsComponent } from './exceptions/job-exceptions.component';
 import { JobRoutingModule } from './job-routing.module';
 import { JobComponent } from './job.component';
-import { JobPendingSlotsComponent } from './pending-slots/job-pending-slots.component';
 import { JobStatusComponent } from './status/job-status.component';
 import { JobTimelineComponent } from './timeline/job-timeline.component';
 
@@ -41,8 +40,7 @@ import { JobTimelineComponent } from './timeline/job-timeline.component';
     JobCheckpointsComponent,
     JobCheckpointsDetailComponent,
     JobCheckpointsSubtaskComponent,
-    JobTimelineComponent,
-    JobPendingSlotsComponent
+    JobTimelineComponent
   ]
 })
 export class JobModule {}
