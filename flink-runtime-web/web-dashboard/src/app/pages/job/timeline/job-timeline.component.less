@@ -39,3 +39,23 @@
     background: @background-color-light;
   }
 }
+
+.filter {
+  width: 100%;
+  padding: 12px;
+  height: 48px;
+  display: flex;
+  .area{
+    flex: 1 1 auto;
+    display: flex;
+    margin: 0 24px;
+    .label{
+      flex: 0 0 80px;
+    }
+    nz-select {
+      flex: 1 1 auto;
+      margin-left: 8px;
+    }
+  }
+
+}

@@ -21,7 +21,23 @@
 <nz-divider *ngIf="isShowSubTaskTimeLine" nzText="SubTask TimeLine"></nz-divider>
 
 <div class="name" [hidden]="!isShowSubTaskTimeLine">
-  {{ selectedSubTask?.name }}
+  {{ selectedVertex?.name }}
   <label class="checkbox" nz-checkbox [ngModel]="showAttempt" (ngModelChange)="toggleAttemptTimeline($event)">Show Attempt Timeline</label>
+</div>
+<div *ngIf="showAttempt" class="filter">
+  <div class="area">
+    <span class="label">Subtask-ID:</span>
+    <nz-select nzSize="small" nzShowSearch [(ngModel)]="selectedSubTaskId" (ngModelChange)="onSubTaskIdChange()" nzPlaceHolder="Select Subtask Id">
+      <nz-option [nzValue]="'all'" [nzLabel]="'All Subtask'"></nz-option>
+      <nz-option *ngFor="let id of listOfSubTaskId" [nzLabel]="'subtask_' + id" [nzValue]="id"></nz-option>
+    </nz-select>
+  </div>
+  <div class="area">
+    <span class="label">Attempt-ID:</span>
+    <nz-select nzSize="small" nzShowSearch [(ngModel)]="selectedAttemptId" [nzDisabled]="listOfAttemptId.length === 0" (ngModelChange)="onAttemptIdChange()" [nzPlaceHolder]="listOfAttemptId.length === 0 ? 'Choose Subtask Id First' : 'Select Attempt Id'">
+      <nz-option [nzValue]="'all'" [nzLabel]="'All Attempt'"></nz-option>
+      <nz-option *ngFor="let id of listOfAttemptId" [nzLabel]="'attempt_' + id" [nzValue]="id"></nz-option>
+    </nz-select>
+  </div>
 </div>
 <div #subTaskTimeLine id="subtask"></div>
