@@ -17,43 +17,56 @@
   -->
 
 <ng-container *ngIf="taskManagerDetail">
-  <nz-card nzTitle="JVM Memory">
-    <div class="info-container">
-      <flink-progress-state header="Heap"
-        [used]="taskManagerDetail.metrics.heapUsed"
-        [max]="taskManagerDetail.metrics.heapMax"
-        [committed]="taskManagerDetail.metrics.heapCommitted">
-      </flink-progress-state>
-      <flink-progress-state header="Non-Heap"
-        [used]="taskManagerDetail.metrics.nonHeapUsed"
-        [max]="taskManagerDetail.metrics.nonHeapMax"
-        [committed]="taskManagerDetail.metrics.nonHeapCommitted">
-      </flink-progress-state>
-      <flink-progress-state header="Total"
-        [used]="taskManagerDetail.metrics.heapUsed + taskManagerDetail.metrics.nonHeapUsed"
-        [max]="taskManagerDetail.metrics.heapMax + taskManagerDetail.metrics.nonHeapMax"
-        [committed]="taskManagerDetail.metrics.heapCommitted + taskManagerDetail.metrics.nonHeapCommitted">
-      </flink-progress-state>
-    </div>
-    <nz-divider></nz-divider>
+  <div class="info-container">
+    <flink-progress-state header="Total Process Memory"
+      [used]="taskManagerDetail.metrics.heapUsed + taskManagerDetail.metrics.nonHeapUsed + taskManagerDetail.metrics.directUsed + taskManagerDetail.metrics.mappedUsed + taskManagerDetail.metrics.managedMemoryUsed"
+      [max]="taskManagerDetail.resource.totalProcessMemory">
+    </flink-progress-state>
+    <flink-progress-state header="Heap Memory"
+      [used]="taskManagerDetail.metrics.heapUsed"
+      [max]="taskManagerDetail.metrics.heapMax"
+      [committed]="taskManagerDetail.metrics.heapCommitted">
+    </flink-progress-state>
+    <flink-progress-state header="Managed Memory"
+      [used]="taskManagerDetail.metrics.managedMemoryUsed"
+      [max]="taskManagerDetail.metrics.managedMemoryTotal">
+    </flink-progress-state>
+    <flink-progress-state header="Network Memory"
+      [used]="taskManagerDetail.metrics.networkMemoryUsed"
+      [max]="taskManagerDetail.metrics.networkMemoryTotal">
+    </flink-progress-state>
+    <flink-progress-state header="Direct Memory"
+      [used]="taskManagerDetail.metrics.directUsed"
+      [config]="taskManagerDetail.resource.frameworkOffHeap + taskManagerDetail.resource.taskOffHeap + taskManagerDetail.resource.networkMemory"
+      [count]="taskManagerDetail.metrics.directCount">
+    </flink-progress-state>
+    <flink-progress-state header="Non-Heap Memory"
+      [used]="taskManagerDetail.metrics.nonHeapUsed"
+      [max]="taskManagerDetail.metrics.nonHeapMax"
+      [committed]="taskManagerDetail.metrics.nonHeapCommitted">
+    </flink-progress-state>
+    <flink-progress-state header="Mapped Memory"
+      [used]="taskManagerDetail.metrics.mappedUsed"
+      [max]="taskManagerDetail.metrics.mappedMax"
+      [count]="taskManagerDetail.metrics.mappedCount">
+    </flink-progress-state>
+  </div>
+  <nz-card nzTitle="Configuration">
     <div nz-row nzGutter="16">
       <div nz-col nzSpan="10">
         <nz-card nzType="inner" class="card-inner" nzTitle="Heap">
           <div nz-row nzGutter="12">
             <div nz-col nzSpan="12">
               <nz-card nzType="inner" class="card-inner" nzTitle="Framework Heap">
-                <nz-card nzType="inner" class="card-inner" nzTitle="Configuration">
-                  {{ taskManagerDetail.resource.frameworkHeap | humanizeBytes }}
-                  <i class="help" nz-tooltip nzTitle="Configuration: taskmanager.memory.framework.heap.size" nz-icon nzType="question-circle" nzTheme="fill"></i>
-                </nz-card>
+                {{ taskManagerDetail.resource.frameworkHeap | humanizeBytes }}
+                <i class="help" nz-tooltip nzTitle="Configuration: taskmanager.memory.framework.heap.size" nz-icon nzType="question-circle" nzTheme="fill"></i>
+
               </nz-card>
             </div>
             <div nz-col nzSpan="12">
               <nz-card nzType="inner" class="card-inner" nzTitle="Task Heap">
-                <nz-card nzType="inner" class="card-inner" nzTitle="Configuration">
-                  {{ taskManagerDetail.resource.taskHeap | humanizeBytes }}
-                  <i class="help" nz-tooltip nzTitle="Configuration: taskmanager.memory.task.heap.size" nz-icon nzType="question-circle" nzTheme="fill"></i>
-                </nz-card>
+                {{ taskManagerDetail.resource.taskHeap | humanizeBytes }}
+                <i class="help" nz-tooltip nzTitle="Configuration: taskmanager.memory.task.heap.size" nz-icon nzType="question-circle" nzTheme="fill"></i>
               </nz-card>
             </div>
           </div>
@@ -64,114 +77,51 @@
           <div nz-row nzGutter="12">
             <div nz-col nzSpan="10">
               <nz-card nzType="inner" nzTitle="JVM MetaSpace">
-                <nz-card nzType="inner" class="card-inner" nzTitle="Configuration">
-                  {{ taskManagerDetail.resource.jvmMetaSpace | humanizeBytes }}
-                  <i class="help" nz-tooltip nzTitle="Configuration: taskmanager.memory.jvm-metaspace.size" nz-icon nzType="question-circle" nzTheme="fill"></i>
-                </nz-card>
+                {{ taskManagerDetail.resource.jvmMetaSpace | humanizeBytes }}
+                <i class="help" nz-tooltip nzTitle="Configuration: taskmanager.memory.jvm-metaspace.size" nz-icon nzType="question-circle" nzTheme="fill"></i>
               </nz-card>
             </div>
             <div nz-col nzSpan="14">
               <nz-card nzType="inner" nzTitle="JVM Overhead">
-                <div nz-row nzGutter="12">
-                  <div nz-col nzSpan="12">
-                    <nz-card nzType="inner" class="card-inner" nzTitle="Configuration">
-                      {{ taskManagerDetail.resource.jvmOverhead | humanizeBytes }}
-                      <i class="help" nz-tooltip nzTitle="Configuration: taskmanager.memory.jvm-overhead.min ~ taskmanager.memory.jvm-overhead.max" nz-icon nzType="question-circle" nzTheme="fill"></i>
-                    </nz-card>
-                  </div>
-                  <div nz-col nzSpan="12">
-                    <nz-card nzType="inner" class="card-inner" nzTitle="JVM limit">
-                      {{ (taskManagerDetail.metrics.nonHeapMax - taskManagerDetail.resource.jvmMetaSpace) | humanizeBytes }}
-                    </nz-card>
-                  </div>
-                </div>
+                {{ taskManagerDetail.resource.jvmOverhead | humanizeBytes }}
+                <i class="help" nz-tooltip nzTitle="Configuration: taskmanager.memory.jvm-overhead.min ~ taskmanager.memory.jvm-overhead.max" nz-icon nzType="question-circle" nzTheme="fill"></i>
               </nz-card>
             </div>
           </div>
         </nz-card>
       </div>
     </div>
-  </nz-card>
-  <nz-card nzTitle="Outside JVM Memory">
-    <div class="info-container">
-      <flink-progress-state header="Direct"
-        [used]="taskManagerDetail.metrics.directUsed"
-        [config]="taskManagerDetail.resource.frameworkOffHeap + taskManagerDetail.resource.taskOffHeap + taskManagerDetail.resource.networkMemory"
-        [count]="taskManagerDetail.metrics.directCount">
-      </flink-progress-state>
-      <flink-progress-state header="Mapped"
-        [used]="taskManagerDetail.metrics.mappedUsed"
-        [max]="taskManagerDetail.metrics.mappedMax"
-        [count]="taskManagerDetail.metrics.mappedCount">
-      </flink-progress-state>
-      <flink-progress-state header="Managed"
-        [used]="taskManagerDetail.metrics.managedMemoryUsed"
-        [max]="taskManagerDetail.metrics.managedMemoryTotal">
-      </flink-progress-state>
-    </div>
-    <nz-divider></nz-divider>
+    <br>
     <div nz-row nzGutter="16">
       <div nz-col nzSpan="17">
         <nz-card nzType="inner" class="card-inner" nzTitle="Direct">
           <div nz-row nzGutter="12">
-            <div nz-col nzSpan="5">
+            <div nz-col nzSpan="8">
               <nz-card nzType="inner" class="card-inner" nzTitle="Framework OffHeap">
-                <nz-card nzType="inner" class="card-inner" nzTitle="Configuration">
-                  {{ taskManagerDetail.resource.frameworkOffHeap | humanizeBytes }}
-                  <i class="help" nz-tooltip nzTitle="Configuration: taskmanager.memory.framework.off-heap.size" nz-icon nzType="question-circle" nzTheme="fill"></i>
-                </nz-card>
+                {{ taskManagerDetail.resource.frameworkOffHeap | humanizeBytes }}
+                <i class="help" nz-tooltip nzTitle="Configuration: taskmanager.memory.framework.off-heap.size" nz-icon nzType="question-circle" nzTheme="fill"></i>
               </nz-card>
             </div>
-            <div nz-col nzSpan="4">
+            <div nz-col nzSpan="8">
               <nz-card nzType="inner" class="card-inner" nzTitle="Task OffHeap">
-                <nz-card nzType="inner" class="card-inner" nzTitle="Configuration">
-                  {{ taskManagerDetail.resource.taskOffHeap | humanizeBytes }}
-                  <i class="help" nz-tooltip nzTitle="Configuration: taskmanager.memory.task.off-heap.size" nz-icon nzType="question-circle" nzTheme="fill"></i>
-                </nz-card>
+                {{ taskManagerDetail.resource.taskOffHeap | humanizeBytes }}
+                <i class="help" nz-tooltip nzTitle="Configuration: taskmanager.memory.task.off-heap.size" nz-icon nzType="question-circle" nzTheme="fill"></i>
               </nz-card>
             </div>
-            <div nz-col nzSpan="15">
-                <nz-card nzType="inner" nzTitle="Network">
-                  <div nz-row nzGutter="12">
-                    <div nz-col nzSpan="6">
-                      <nz-card nzType="inner" class="card-inner" nzTitle="Configuration">
-                        {{ taskManagerDetail.resource.networkMemory | humanizeBytes }}
-                        <i class="help" nz-tooltip nzTitle="Configuration: taskmanager.memory.network.min ~ taskmanager.memory.network.max" nz-icon nzType="question-circle" nzTheme="fill"></i>
-                      </nz-card>
-                    </div>
-                    <div nz-col nzSpan="9">
-                      <nz-card nzType="inner" class="card-inner small" nzTitle="Segments">
-                        <dl>
-                          <dd>Used</dd>
-                          <dt>{{(taskManagerDetail.metrics.memorySegmentsTotal - taskManagerDetail.metrics.memorySegmentsAvailable) | number}}</dt>
-                          <dd>Total</dd>
-                          <dt>{{taskManagerDetail.metrics.memorySegmentsTotal | number}}</dt>
-                        </dl>
-                      </nz-card>
-                    </div>
-                    <div nz-col nzSpan="9">
-                      <nz-card nzType="inner" class="card-inner small" nzTitle="Memory">
-                        <dl>
-                          <dd>Used</dd>
-                          <dt>{{taskManagerDetail.metrics.networkMemoryUsed | humanizeBytes}}</dt>
-                          <dd>Total</dd>
-                          <dt>{{taskManagerDetail.metrics.networkMemoryTotal | humanizeBytes}}</dt>
-                        </dl>
-                      </nz-card>
-                    </div>
-                  </div>
-                </nz-card>
-              </div>
+            <div nz-col nzSpan="8">
+              <nz-card nzType="inner" nzTitle="Network">
+                {{ taskManagerDetail.resource.networkMemory | humanizeBytes }}
+                <i class="help" nz-tooltip nzTitle="Configuration: taskmanager.memory.network.min ~ taskmanager.memory.network.max" nz-icon nzType="question-circle" nzTheme="fill"></i>
+              </nz-card>
+            </div>
           </div>
         </nz-card>
       </div>
       <div nz-col nzSpan="7">
         <nz-card nzType="inner" class="card-inner" nzTitle="Other">
           <nz-card nzType="inner" class="card-inner" nzTitle="Managed">
-            <nz-card nzType="inner" class="card-inner" nzTitle="Configuration">
-              {{ taskManagerDetail.resource.managedMemory | humanizeBytes }}
-              <i class="help" nz-tooltip nzTitle="Configuration: taskmanager.memory.managed.size" nz-icon nzType="question-circle" nzTheme="fill"></i>
-            </nz-card>
+            {{ taskManagerDetail.resource.managedMemory | humanizeBytes }}
+            <i class="help" nz-tooltip nzTitle="Configuration: taskmanager.memory.managed.size" nz-icon nzType="question-circle" nzTheme="fill"></i>
           </nz-card>
         </nz-card>
       </div>

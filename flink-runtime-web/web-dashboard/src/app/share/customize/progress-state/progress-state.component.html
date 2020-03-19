@@ -1,6 +1,6 @@
-<div class="left">
+<div class="container">
   <h3>{{header}}</h3>
-  <nz-divider></nz-divider>
+  <nz-progress nzStrokeLinecap="square" nzType="line" [nzPercent]="percent" nzStatus="normal"></nz-progress>
   <dl>
     <dd>Used</dd>
     <dt>{{ used | humanizeBytes }}</dt>
@@ -21,7 +21,4 @@
       <dt>{{ count | humanizeBytes }}</dt>
     </ng-container>
   </dl>
-</div>
-<div class="right">
-  <nz-progress nzStrokeLinecap="square" nzType="circle" [nzPercent]="percent" nzStatus="normal"></nz-progress>
 </div>

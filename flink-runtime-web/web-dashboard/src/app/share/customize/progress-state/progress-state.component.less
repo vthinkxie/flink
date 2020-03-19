@@ -1,17 +1,20 @@
 :host {
-  padding: 0 12px;
+  padding: 16px;
+  margin-bottom: 8px;
+  margin-right: 8px;
   display: flex;
   flex: 1 1 auto;
   overflow: hidden;
-  .left {
+  border: 1px solid #e8e8e8;
+  background: #ffffff;
+  min-width: 200px;
+  .container {
+    position: relative;
     flex: auto;
-    nz-divider {
-      margin: 12px 0 0 0;
-      width: calc(~"100% + 10px");
+    nz-progress {
+      width: calc(~"100% - 8px");
+      display: block;
     }
-  }
-  .right {
-    flex: 0 0 180px;
   }
   dl {
     display: grid;
