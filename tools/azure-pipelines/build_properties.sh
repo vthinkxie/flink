@@ -47,9 +47,9 @@ function is_docs_only_pullrequest() {
 	# 3. Get number of commits in PR
 	GITHUB_NUM_COMMITS=`echo $GITHUB_PULL_DETAIL | jq -r ".commits"`
 
-	if [[ $(git diff --name-only head..head~$GITHUB_NUM_COMMITS | grep -v "docs/") == "" ]] ; then
+	if [[ $(git diff --name-only $GITHUB_PULL_HEAD_SHA..$GITHUB_PULL_HEAD_SHA~$GITHUB_NUM_COMMITS | grep -v "docs/") == "" ]] ; then
 		echo "INFO: This is a docs only change. Changed files:"
-		git diff --name-only head..head~$GITHUB_NUM_COMMITS
+		git diff --name-only $GITHUB_PULL_HEAD_SHA..$GITHUB_PULL_HEAD_SHA~$GITHUB_NUM_COMMITS
 		return 0
 	fi
 	return 1
