@@ -16,20 +16,48 @@
  * limitations under the License.
  */
 
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+@import "theme";
 
-@Component({
-  selector: 'flink-job-manager',
-  templateUrl: './job-manager.component.html',
-  styleUrls: ['./job-manager.component.less'],
-  changeDetection: ChangeDetectionStrategy.OnPush
-})
-export class JobManagerComponent {
-  listOfNavigation = [
-    { path: 'metrics', title: 'Metrics' },
-    { path: 'config', title: 'Configuration' },
-    { path: 'logs', title: 'Logs' },
-    { path: 'stdout', title: 'Stdout' },
-    { path: 'log', title: 'Log List' }
-  ];
+.wrapper {
+  margin: 24px;
+}
+.flink-memory-model {
+  ::ng-deep {
+    table {
+      border-collapse: collapse;
+    }
+    .ant-table-small {
+      border: none;
+      .ant-table-body {
+        margin: 0;
+        overflow: hidden !important;
+      }
+      tr {
+        &:hover {
+          td, th {
+            background: transparent;
+          }
+        }
+      }
+      td, th {
+        border-collapse: collapse;
+        border: 1px solid @border-color-split !important;
+        &.table-header {
+          background: @table-header-bg !important;
+          color: @table-header-color;
+          font-weight: 500;
+        }
+      }
+    }
+  }
+}
+
+nz-progress {
+  display: block;
+  width: 90%;
+  ::ng-deep {
+    .ant-progress-inner {
+      border-radius: 0 !important;
+    }
+  }
 }
