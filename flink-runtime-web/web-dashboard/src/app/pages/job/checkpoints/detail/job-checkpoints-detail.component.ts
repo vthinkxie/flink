@@ -65,29 +65,30 @@ export class JobCheckpointsDetailComponent implements OnInit {
         this.jobService.loadCheckpointConfig(this.jobDetail.jid),
         this.jobService.loadCheckpointDetails(this.jobDetail.jid, this.checkPoint.id)
       ]).subscribe(
-      ([config, detail]) => {
-      	this.checkPointConfig = config;
-        this.checkPointDetail = detail;
-        if (this.checkPointDetail.checkpoint_type === 'CHECKPOINT') {
-          if (this.checkPointConfig.unaligned_checkpoints) {
-            this.checkPointType = 'unaligned checkpoint';
+        ([config, detail]) => {
+          this.checkPointConfig = config;
+          this.checkPointDetail = detail;
+          if (this.checkPointDetail.checkpoint_type === 'CHECKPOINT') {
+            if (this.checkPointConfig.unaligned_checkpoints) {
+              this.checkPointType = 'unaligned checkpoint';
+            } else {
+              this.checkPointType = 'aligned checkpoint';
+            }
+          } else if (this.checkPointDetail.checkpoint_type === 'SYNC_SAVEPOINT') {
+            this.checkPointType = 'savepoint on cancel';
+          } else if (this.checkPointDetail.checkpoint_type === 'SAVEPOINT') {
+            this.checkPointType = 'savepoint';
           } else {
-            this.checkPointType = 'aligned checkpoint';
+            this.checkPointType = '-';
           }
-        } else if (this.checkPointDetail.checkpoint_type === 'SYNC_SAVEPOINT') {
-          this.checkPointType = 'savepoint on cancel';
-        } else if (this.checkPointDetail.checkpoint_type === 'SAVEPOINT') {
-          this.checkPointType = 'savepoint';
-        } else {
-          this.checkPointType = '-';
+          this.isLoading = false;
+          this.cdr.markForCheck();
+        },
+        () => {
+          this.isLoading = false;
+          this.cdr.markForCheck();
         }
-        this.isLoading = false;
-        this.cdr.markForCheck();
-      },
-      () => {
-        this.isLoading = false;
-        this.cdr.markForCheck();
-      });
+      );
     }
   }
 
